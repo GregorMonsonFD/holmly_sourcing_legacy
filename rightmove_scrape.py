@@ -110,7 +110,7 @@ def get_for_sale_properties(borough: str):
         if number_of_beds.isdigit():
             all_apartment_bed_number.append(number_of_beds)
         else:
-            all_apartment_bed_number.append(None)
+            all_apartment_bed_number.append("NULL")
 
     print(f"Array lengths: {len(all_apartment_ids)}, {len(all_address)}, {len(all_apartment_bed_number)}, {len(all_apartment_links)}, {len(all_description)}, {len(all_price)}")
 
@@ -124,5 +124,5 @@ def get_for_sale_properties(borough: str):
         "Price": all_price,
     }
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(f"/home/eggzo/airflow/tmpdata/sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
-    #df.to_csv(f"sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
+    #df.to_csv(f"/home/eggzo/airflow/tmpdata/sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
+    df.to_csv(f"sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
