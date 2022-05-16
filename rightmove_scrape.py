@@ -1,19 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 import pandas as pd
-import time
-import random
 from datetime import date
 
 #---------------------------------------------------------------------------------------------------------------------
 
+
 # create lists to store our data
 def get_for_sale_properties(borough: str):
-    all_apartment_links = []    # stores apartment links
-    all_description = []        # stores number of bedrooms in the apartment
-    all_address = []            # stores address of apartment
-    all_price = []              # stores the listing price of apartment
+    all_apartment_ids = []          # stores apartment ids from links
+    all_apartment_bed_number = []   # stores number of beds
+    all_apartment_links = []        # stores apartment links
+    all_description = []            # stores number of bedrooms in the apartment
+    all_address = []                # stores address of apartment
+    all_price = []                  # stores the listing price of apartment
+
 
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -40,7 +41,9 @@ def get_for_sale_properties(borough: str):
 
         soup = BeautifulSoup(res.text, "html.parser")
 
+
 #---------------------------------------------------------------------------------------------------------------------
+
 
         apartments = soup.find_all("div", class_="l-searchResult is-list")
 
@@ -85,8 +88,8 @@ def get_for_sale_properties(borough: str):
                 )
                 all_price.append(price)
 
-            except :
-                print(f"WARN : end of pages outputing data")
+            except Exception as err:
+                print(f"ERROR: {err}")
                 break
 
         # Code to count how many listings we have scrapped already.
@@ -95,12 +98,31 @@ def get_for_sale_properties(borough: str):
         if index >= number_of_listings:
             break
 
+    # append id
+    for apartment_link in all_apartment_links:
+        all_apartment_ids.append(apartment_link[39:apartment_link.find('#')])
+        # print(apartment_link[39:apartment_link.find('#')])
+
+    # append number of beds
+    for apartment_description in all_description:
+        number_of_beds = apartment_description[:apartment_description.find(' ')]
+
+        if number_of_beds.isdigit():
+            all_apartment_bed_number.append(number_of_beds)
+        else:
+            all_apartment_bed_number.append(None)
+
+    print(f"Array lengths: {len(all_apartment_ids)}, {len(all_address)}, {len(all_apartment_bed_number)}, {len(all_apartment_links)}, {len(all_description)}, {len(all_price)}")
+
     # convert data to dataframe
     data = {
-        "Links": all_apartment_links,
+        "ID": all_apartment_ids,
         "Address": all_address,
+        "#Beds": all_apartment_bed_number,
+        "Links": all_apartment_links,
         "Description": all_description,
         "Price": all_price,
     }
     df = pd.DataFrame.from_dict(data)
     df.to_csv(f"/home/eggzo/airflow/tmpdata/sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
+    #df.to_csv(f"sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
