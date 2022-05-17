@@ -22,7 +22,5 @@ with dag:
         task_id='rightmove_edinburgh_to_csv',
         python_callable=get_for_sale_properties('5E475'),
         execution_timeout=datetime.timedelta(seconds=300),
-        timeout=3600,
         retries=2,
-        mode="reschedule",
     )
