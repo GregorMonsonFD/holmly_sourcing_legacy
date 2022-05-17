@@ -1,4 +1,4 @@
-rom airflow.models import DAG
+from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 from scripts.rightmove_scrape import get_for_sale_properties
