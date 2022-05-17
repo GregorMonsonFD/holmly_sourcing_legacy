@@ -13,7 +13,11 @@ args = {
 dag = DAG(
     dag_id='rightmove-scrape-edinburgh',
     default_args=args,
-    schedule_interval='0 0 * * *' # make this workflow happen every day
+    schedule_interval='0 0 * * *', # make this workflow happen every day
+    execution_timeout=timedelta(seconds=300),
+    timeout=3600,
+    retries=2,
+    mode="reschedule",
 )
 
 with dag:
