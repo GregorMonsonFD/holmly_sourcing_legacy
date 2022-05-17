@@ -7,7 +7,9 @@ from datetime import date
 
 
 # create lists to store our data
-def get_for_sale_properties(borough: str):
+def get_for_sale_properties(**kwargs):
+    borough = kwargs['borough']
+    print(f"Getting data for borough : {borough}")
     all_apartment_ids = []          # stores apartment ids from links
     all_apartment_bed_number = []   # stores number of beds
     all_apartment_links = []        # stores apartment links

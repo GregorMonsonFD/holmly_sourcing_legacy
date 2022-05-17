@@ -20,7 +20,9 @@ dag = DAG(
 with dag:
     rightmove_edinburgh_to_csv = PythonOperator(
         task_id='rightmove_edinburgh_to_csv',
-        python_callable=get_for_sale_properties('5E475'),
+        provide_context=True,
+        python_callable=get_for_sale_properties,
         execution_timeout=datetime.timedelta(seconds=300),
+        op_kwargs={'borough': '5E475'},
         retries=2,
     )
