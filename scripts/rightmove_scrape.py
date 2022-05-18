@@ -7,7 +7,7 @@ from datetime import date
 
 
 # create lists to store our data
-def get_for_sale_properties(**kwargs):
+def get_for_sale_properties(ds, **kwargs):
     borough = kwargs['borough']
     print(f"Getting data for borough : {borough}")
     all_apartment_ids = []          # stores apartment ids from links
@@ -126,5 +126,5 @@ def get_for_sale_properties(**kwargs):
         "Price": all_price,
     }
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(f"/home/eggzo/airflow/tmp_data/sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
+    df.to_csv(f"/home/eggzo/airflow/tmp_data/sales_data_{borough}_{ds}.csv", encoding="utf-8", header="true", index = False)
     #df.to_csv(f"sales_data_{borough}_{date.today()}.csv", encoding="utf-8", header="true", index = False)
