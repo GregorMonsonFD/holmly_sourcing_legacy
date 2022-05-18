@@ -9,7 +9,7 @@ args = {
     'owner': 'Gregor Monson',
     'start_date': days_ago(0),
     'yesterday': days_ago(1), # make start date in the past
-    'borough_code': '{{ var.value.<edinburgh_id> }}'
+    'borough_code': '{{ var.value.edinburgh_id }}'
 }
 
 dag = DAG(
