@@ -24,7 +24,7 @@ with dag:
         provide_context=True,
         python_callable=get_for_sale_properties,
         execution_timeout=datetime.timedelta(seconds=300),
-        op_kwargs={'borough': '{{ borough_code }}'},
+        op_kwargs={'borough': '{{ var.value.<edinburgh_id> }}'},
         retries=2,
         dag=dag,
     )
