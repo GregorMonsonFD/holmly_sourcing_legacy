@@ -32,7 +32,7 @@ with dag:
     ftp_upload_edinburgh_to_db = SFTPOperator(
         task_id="sftp_pi_to_warehouse",
         ssh_conn_id="sftp_default",
-        local_filepath="/home/eggzo/tmp_data/sales_data_{{ var.value.edinburgh_id }}_{{ ds }}.csv",
+        local_filepath="/home/eggzo/airflow/tmp_data/sales_data_{{ var.value.edinburgh_id }}_{{ ds }}.csv",
         remote_filepath="/var/lib/mysql-files/sales_data_{{ var.value.edinburgh_id }}_{{ ds }}.csv",
         operation="put",
         create_intermediate_dirs=True,
