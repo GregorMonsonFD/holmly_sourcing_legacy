@@ -35,7 +35,7 @@ with dag:
     """
     )
 
-    make_staging_table.replace("\n", "")
+    make_staging_table = make_staging_table.replace("\n", "")
 
     rightmove_edinburgh_to_csv = PythonOperator(
         task_id='rightmove_edinburgh_to_csv',
