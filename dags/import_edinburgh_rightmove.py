@@ -22,7 +22,7 @@ dag = DAG(
 with dag:
     make_staging_table = (
     """ 
-DROP TABLE IF EXISTS landing.edinburgh{{ ds }};
+DROP TABLE IF EXISTS landing.edinburgh{{ ds }}; 
 CREATE TABLE landing.edinburgh{{ ds }}
 (
 ID int not null, 
