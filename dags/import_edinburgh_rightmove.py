@@ -25,12 +25,12 @@ with dag:
 DROP TABLE IF EXISTS landing.edinburgh{{ ds }};
 CREATE TABLE landing.edinburgh{{ ds }}
 (
-ID int not null,
-address varchar(128) not null,
-number_of_beds smallint null,
-links varchar(256) not null,
-description varchar(128) not null,
-price varchar(64) not null
+ID int not null, 
+address varchar(128) not null, 
+number_of_beds smallint null, 
+links varchar(256) not null, 
+description varchar(128) not null, 
+price varchar(64) not null 
 );
 """
     )
