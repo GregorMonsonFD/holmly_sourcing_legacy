@@ -41,13 +41,14 @@ LOAD DATA INFILE '/var/lib/mysql-files/sales_data_{{ var.value.edinburgh_id }}_{
 INTO TABLE landing.edinburgh{{ ds_nodash }} 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"' 
-LINES TERMINATED BY '\n' 
+LINES TERMINATED BY '***' 
 IGNORE 1 ROWS; 
 """
 )
 
     make_staging_table = make_staging_table.replace("\n", "")
     import_csv = import_csv.replace("\n", "")
+    import_csv = import_csv.replace("***", "\n")
 
     rightmove_edinburgh_to_csv = PythonOperator(
         task_id='rightmove_edinburgh_to_csv',
