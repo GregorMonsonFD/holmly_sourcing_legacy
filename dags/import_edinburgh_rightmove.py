@@ -68,4 +68,4 @@ with dag:
     sftp_upload_edinburgh_to_db >> mysql_group(SQL_files[0]) >> mysql_group(SQL_files[1]) >> mysql_group(SQL_files[2])
 
     for i in range(3, 6):
-        mysql_group(SQL_files[2]) >> mysql_group(SQL_files[i])
+        sql_insert_ids_edi >> mysql_group(SQL_files[i])
