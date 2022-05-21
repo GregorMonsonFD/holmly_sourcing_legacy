@@ -3,7 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
-from scripts.rightmove_scrape import get_for_sale_properties
+from scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime
 
 args = {
@@ -20,35 +20,6 @@ dag = DAG(
 )
 
 with dag:
-    make_staging_table = (
-""" 
-DROP TABLE IF EXISTS landing.edinburgh{{ ds_nodash }}; 
-CREATE TABLE landing.edinburgh{{ ds_nodash }}
-(
-ID bigint not null, 
-address varchar(128) not null, 
-number_of_beds smallint null, 
-links varchar(256) not null, 
-description varchar(128) not null, 
-price varchar(64) not null 
-);
-"""
-)
-
-    import_csv = (
-"""
-LOAD DATA INFILE '/var/lib/mysql-files/sales_data_{{ var.value.edinburgh_id }}_{{ ds }}.csv' 
-INTO TABLE landing.edinburgh{{ ds_nodash }} 
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"' 
-LINES TERMINATED BY '***' 
-IGNORE 1 ROWS; 
-"""
-)
-
-    make_staging_table = make_staging_table.replace("\n", "")
-    import_csv = import_csv.replace("\n", "")
-    import_csv = import_csv.replace("***", "\n")
 
     rightmove_edinburgh_to_csv = PythonOperator(
         task_id='rightmove_edinburgh_to_csv',
@@ -72,7 +43,7 @@ IGNORE 1 ROWS;
     )
 
     create_staging_table = MySqlOperator(
-        sql=make_staging_table,
+        sql='create_landing_table_edi.sql',
         task_id="create_staging_table_edinburgh",
         mysql_conn_id="mysql_warehouse",
         retries=3,
@@ -80,7 +51,7 @@ IGNORE 1 ROWS;
     )
 
     import_csv = MySqlOperator(
-        sql=import_csv,
+        sql='csv_to_landing_table_edi.sql',
         task_id="import_csv_edinburgh",
         mysql_conn_id="mysql_warehouse",
         retries=3,
