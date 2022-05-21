@@ -17,6 +17,7 @@ dag = DAG(
     dag_id='rightmove-edinburgh',
     default_args=args,
     schedule_interval='0 0 * * *', # make this workflow happen every day
+    template_searchpath=['/home/eggzo/airflow/scripts/sql'],
 )
 
 with dag:
