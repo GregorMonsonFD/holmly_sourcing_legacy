@@ -65,7 +65,7 @@ with dag:
 
     rightmove_edinburgh_to_csv >> sftp_upload_edinburgh_to_db
 
-    sftp_upload_edinburgh_to_db >> mysql_group(0) >> mysql_group(1) >> mysql_group(2)
+    sftp_upload_edinburgh_to_db >> mysql_group(SQL_files[0]) >> mysql_group(SQL_files[1]) >> mysql_group(SQL_files[2])
 
     for i in range(3, 6):
-        mysql_group(2) >> mysql_group(i)
+        mysql_group(SQL_files[2]) >> mysql_group(SQL_files[i])
