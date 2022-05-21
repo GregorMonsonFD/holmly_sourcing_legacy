@@ -16,8 +16,8 @@ CREATE TABLE staging.edinburgh
     full_address varchar(256),
     postcode varchar(8),
     number_of_beds smallint,
-    links varchar(256) not null,
-    description varchar(128) not null,
+    links varchar(256),
+    description varchar(128),
     price decimal(11,2)
 )
 ;
