@@ -8,19 +8,39 @@ import datetime
 
 args = {
     'owner': 'Gregor Monson',
+    'location': 'Edinburgh',
     'start_date': days_ago(0),
     'yesterday': days_ago(1), # make start date in the past
     'borough_code': '{{ var.value.edinburgh_id }}'
 }
 
+
+def MySQL_group(name, **kwargs):
+    return MySqlOperator(
+        task_id='sql_{}'.format(name[:-4]),
+        sql=name,
+        mysql_conn_id="mysql_warehouse",
+        retries=3,
+        dag=dag)
+
 dag = DAG(
     dag_id='rightmove-edinburgh',
     default_args=args,
     schedule_interval='0 0 * * *', # make this workflow happen every day
-    template_searchpath=['/home/eggzo/airflow/scripts/sql'],
+    template_searchpath=['/home/eggzo/airflow/scripts/sql/edi'],
 )
 
 with dag:
+    SQL_files = (
+    [
+        'csv_to_landing_area_edi.sql',
+        'create_tables_edi.sql',
+        'insert_ids_edi.sql',
+        'price_conversion_edi.sql',
+        'updating_static_fields.sql',
+        'address_extraction_edi.sql'
+    ]
+    )
 
     rightmove_edinburgh_to_csv = PythonOperator(
         task_id='rightmove_edinburgh_to_csv',
@@ -32,7 +52,7 @@ with dag:
         dag=dag,
     )
 
-    ftp_upload_edinburgh_to_db = SFTPOperator(
+    sftp_upload_edinburgh_to_db = SFTPOperator(
         task_id="sftp_pi_to_warehouse",
         ssh_conn_id="sftp_default",
         local_filepath="/home/eggzo/airflow/tmp_data/sales_data_{{ var.value.edinburgh_id }}_{{ ds }}.csv",
@@ -43,21 +63,9 @@ with dag:
         dag=dag
     )
 
-    create_staging_table = MySqlOperator(
-        sql='create_landing_table_edi.sql',
-        task_id="create_staging_table_edinburgh",
-        mysql_conn_id="mysql_warehouse",
-        retries=3,
-        dag=dag
-    )
+    rightmove_edinburgh_to_csv >> sftp_upload_edinburgh_to_db
 
-    import_csv = MySqlOperator(
-        sql='csv_to_landing_area_edi.sql',
-        task_id="import_csv_edinburgh",
-        mysql_conn_id="mysql_warehouse",
-        retries=3,
-        dag=dag
-    )
+    sftp_upload_edinburgh_to_db >> MySQL_group(0) >> MySQL_group(1) >> MySQL_group(2)
 
-    rightmove_edinburgh_to_csv >> ftp_upload_edinburgh_to_db >> create_staging_table
-    create_staging_table >> import_csv
+    for i in range(3, 6):
+        MySQL_group(2) >> MySQL_group(i)
