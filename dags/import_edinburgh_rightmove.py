@@ -15,7 +15,7 @@ args = {
 }
 
 
-def MySQL_group(name, **kwargs):
+def mysql_group(name, **kwargs):
     return MySqlOperator(
         task_id='sql_{}'.format(name[:-4]),
         sql=name,
@@ -65,7 +65,7 @@ with dag:
 
     rightmove_edinburgh_to_csv >> sftp_upload_edinburgh_to_db
 
-    sftp_upload_edinburgh_to_db >> MySQL_group(0) >> MySQL_group(1) >> MySQL_group(2)
+    sftp_upload_edinburgh_to_db >> mysql_group(0) >> mysql_group(1) >> mysql_group(2)
 
     for i in range(3, 6):
-        MySQL_group(2) >> MySQL_group(i)
+        mysql_group(2) >> mysql_group(i)
