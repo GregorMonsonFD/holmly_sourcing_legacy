@@ -33,8 +33,8 @@ dag = DAG(
 with dag:
     SQL_files = (
     [
-        'csv_to_landing_area_edi.sql',
         'create_tables_edi.sql',
+        'csv_to_landing_area_edi.sql',
         'insert_ids_edi.sql',
         'price_conversion_edi.sql',
         'updating_static_fields.sql',
