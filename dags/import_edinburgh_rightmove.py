@@ -52,7 +52,7 @@ with dag:
     )
 
     import_csv = MySqlOperator(
-        sql='csv_to_landing_table_edi.sql',
+        sql='csv_to_landing_area_edi.sql',
         task_id="import_csv_edinburgh",
         mysql_conn_id="mysql_warehouse",
         retries=3,
