@@ -32,34 +32,34 @@ def mysql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
         retries=3,
         dag=dag)
 
+SQL_files = (
+        [
+            'create_tables.sql',
+            'csv_to_landing_area.sql',
+            'insert_ids.sql',
+            'price_conversion.sql',
+            'updating_static_fields.sql',
+            'address_extraction.sql'
+        ]
+        )
 
-dag = DAG(
-    dag_id='rightmove-scrape',
-    default_args=args,
-    schedule_interval='0 0 * * *', # make this workflow happen every day
-    template_searchpath=['/home/eggzo/airflow/scripts/sql/db_operations'],
-)
+for region in config.get('imports'):
 
-with dag:
-    SQL_files = (
-    [
-        'create_tables.sql',
-        'csv_to_landing_area.sql',
-        'insert_ids.sql',
-        'price_conversion.sql',
-        'updating_static_fields.sql',
-        'address_extraction.sql'
-    ]
+    if not region.get("is_active"):
+        continue
+
+    rightmove_region = region["rightmove_region"]
+    region_name = region["region_name"]
+    postcode_prefix = region["postcode_prefix"]
+
+    dag = DAG(
+        dag_id=f'rightmove-scrape-{region_name}',
+        default_args=args,
+        schedule_interval='0 0 * * *', # make this workflow happen every day
+        template_searchpath=['/home/eggzo/airflow/scripts/sql/db_operations'],
     )
 
-    for region in config.get('imports'):
-
-        if not region.get("is_active"):
-            continue
-
-        rightmove_region = region["rightmove_region"]
-        region_name = region["region_name"]
-        postcode_prefix = region["postcode_prefix"]
+    with dag:
 
         rightmove_to_csv = PythonOperator(
             task_id=f'rightmove_{ region_name }_to_csv',
