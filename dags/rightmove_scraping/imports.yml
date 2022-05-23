@@ -8,7 +8,7 @@ imports:
   - is_active: True
     rightmove_region: '5E550'
     region_name: 'glasgow'
-    postcode_prefix: ' G'
+    postcode_prefix: 'G'
 
   - is_active: True
     rightmove_region: '5E94487'
