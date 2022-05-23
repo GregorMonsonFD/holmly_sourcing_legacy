@@ -2,4 +2,4 @@ imports:
   - is_active: True
     rightmove_region: '5E475'
     region_name: 'edinburgh'
-    postcode_prefix_reversed: 'EH'
+    postcode_prefix: 'EH'
