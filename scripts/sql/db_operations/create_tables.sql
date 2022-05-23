@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS landing.edinburgh{{ ds_nodash }};
-CREATE TABLE landing.edinburgh{{ ds_nodash }}
+DROP TABLE IF EXISTS landing.{{ params.region_name }}{{ ds_nodash }};
+CREATE TABLE landing.{{ params.region_name }}{{ ds_nodash }}
     (
     ID bigint not null,
     address varchar(256) not null,
@@ -9,8 +9,8 @@ CREATE TABLE landing.edinburgh{{ ds_nodash }}
     price varchar(64) not null
     );
 
-DROP TABLE IF EXISTS staging.edinburgh;
-CREATE TABLE staging.edinburgh
+DROP TABLE IF EXISTS staging.{{ params.region_name }};
+CREATE TABLE staging.{{ params.region_name }}
 (
     ID bigint,
     full_address varchar(256),
