@@ -17,7 +17,7 @@ SET
     postcode =
     IF
     (
-        LENGTH(_postcode) < 10 AND LIKE '%[0-9]%',
+        LENGTH(_postcode) < 10 AND _postcode LIKE '%[0-9]%',
         CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
         null
     )
