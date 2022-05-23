@@ -1,16 +1,16 @@
 imports:
 
   - is_active: True
-      rightmove_region: '5E475'
-      region_name: 'edinburgh'
-      postcode_prefix: 'EH'
+    rightmove_region: '5E475'
+    region_name: 'edinburgh'
+    postcode_prefix: 'EH'
 
   - is_active: True
-      rightmove_region: '5E550'
-      region_name: 'glasgow'
-      postcode_prefix: 'G'
+    rightmove_region: '5E550'
+    region_name: 'glasgow'
+    postcode_prefix: 'G'
 
   - is_active: True
-      rightmove_region: '5E94487'
-      region_name: 'aberdeen'
-      postcode_prefix: 'AB'
+    rightmove_region: '5E94487'
+    region_name: 'aberdeen'
+    postcode_prefix: 'AB'
