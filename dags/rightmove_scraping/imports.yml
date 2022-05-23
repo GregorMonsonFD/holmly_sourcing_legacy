@@ -14,3 +14,8 @@ imports:
     rightmove_region: '5E94487'
     region_name: 'aberdeen'
     postcode_prefix: 'AB'
+
+  - is_active: True
+    rightmove_region: '5E95742'
+    region_name: 'falkirk'
+    postcode_prefix: 'FK'
