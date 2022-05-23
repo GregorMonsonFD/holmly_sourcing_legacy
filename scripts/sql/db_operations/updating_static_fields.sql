@@ -1,6 +1,6 @@
 UPDATE
-    staging.edinburgh STG,
-    landing.edinburgh20220521 LDN
+    staging.{{ params.region_name }} STG,
+    landing.{{ params.region_name }}{{ ds_nodash }} LDN
 SET
     STG.number_of_beds = LDN.number_of_beds,
     STG.links = LDN.links,
