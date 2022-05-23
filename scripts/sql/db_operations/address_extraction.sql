@@ -1,14 +1,21 @@
-DROP TABLE IF EXISTS staging.address_extraction_{{ params.region_name }}_stage_1;
-CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}_stage_1
+DROP TABLE IF EXISTS staging.address_extraction_{{ params.region_name }}
+CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}
 SELECT
     ID AS _ID,
     address AS _address,
     reverse(SUBSTRING_INDEX(reverse(address), reverse('{{ params.postcode_prefix }}'), 1)) AS _postcode
 FROM landing.{{ params.region_name }}{{ ds_nodash }};
 
-CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}_stage_2
-SELECT * FROM staging.address_extraction_{{ params.region_name }}_stage_1
-WHERE _postcode REGEXP '[0-9]';
+
+UPDATE staging.address_extraction_{{ params.region_name }}
+SET _postcode =
+    IF
+    (
+        _postcode REGEXP '[0-9]',
+        _postcode,
+        null
+    );
+
 
 UPDATE
     staging.{{ params.region_name }} STG,
