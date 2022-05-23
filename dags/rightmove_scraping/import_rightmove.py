@@ -52,14 +52,14 @@ for region in config.get('imports'):
     region_name = region["region_name"]
     postcode_prefix = region["postcode_prefix"]
 
-    dag = DAG(
+    globals()[f'rightmove-scrape-{region_name}'] = DAG(
         dag_id=f'rightmove-scrape-{region_name}',
         default_args=args,
         schedule_interval='0 0 * * *', # make this workflow happen every day
         template_searchpath=['/home/eggzo/airflow/scripts/sql/db_operations'],
     )
 
-    with dag:
+    with globals()[f'rightmove-scrape-{region_name}']:
 
         rightmove_to_csv = PythonOperator(
             task_id=f'rightmove_{ region_name }_to_csv',
