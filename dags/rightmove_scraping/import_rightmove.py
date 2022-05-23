@@ -39,7 +39,8 @@ SQL_files = (
             'insert_ids.sql',
             'price_conversion.sql',
             'updating_static_fields.sql',
-            'address_extraction.sql'
+            'address_extraction.sql',
+            'landing_to_refined.sql'
         ]
         )
 
@@ -82,11 +83,13 @@ for region in config.get('imports'):
             retries=3,
         )
 
-        rightmove_to_csv >> sftp_upload_to_db
-
         sql_insert_ids = mysql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
+
+        staging_to_refined = mysql_group(SQL_files[6], rightmove_region, region_name, postcode_prefix)
+
+        rightmove_to_csv >> sftp_upload_to_db
 
         sftp_upload_to_db >> mysql_group(SQL_files[0], rightmove_region, region_name, postcode_prefix) >> mysql_group(SQL_files[1], rightmove_region, region_name, postcode_prefix) >> sql_insert_ids
 
-        for i in range(3, 6):
-            sql_insert_ids >> mysql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix)
+        for i in range(3, 5):
+            sql_insert_ids >> mysql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
