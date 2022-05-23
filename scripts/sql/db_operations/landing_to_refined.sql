@@ -10,7 +10,7 @@ SET
     TGT.links               = STG.links,
     TGT.description         = STG.description,
     TGT.price               = STG.price
-    TGT.last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H-%M-%S") }}'
+    TGT.last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}'
     TGT.seen_last_ingestion = TRUE
 WHERE
     STG.ID = TGT.ID
@@ -35,8 +35,8 @@ SELECT
     STG.links,
     STG.description,
     STG.price,
-    '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H-%M-%S") }}',
-    '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H-%M-%S") }}',
+    '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
+    '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
     TRUE
 FROM staging.staging_to_refined_new_{{ params.region_name }} STG
 ;
