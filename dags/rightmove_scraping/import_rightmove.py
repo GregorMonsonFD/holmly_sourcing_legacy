@@ -16,7 +16,7 @@ LOCAL_PATH = os.path.dirname(__file__)
 config_file = os.path.join(LOCAL_PATH, "imports.yml")
 
 with open(config_file, "r") as infile:
-    config = yaml.safe_load(infile)
+    config = yaml.full_load(infile)
 
 
 def mysql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
@@ -57,9 +57,9 @@ with dag:
         if not region.get("is_active"):
             continue
 
-        rightmove_region = region.get("rightmove_region")
-        region_name = region.get("region_name")
-        postcode_prefix = region.get("postcode_prefix")
+        rightmove_region = region["rightmove_region"]
+        region_name = region["region_name"]
+        postcode_prefix = region["postcode_prefix"]
 
         rightmove_to_csv = PythonOperator(
             task_id='rightmove_{{ params.rightmove_region }}_to_csv',
