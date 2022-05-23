@@ -19,7 +19,7 @@ SET _postcode =
 
 UPDATE
     staging.{{ params.region_name }} STG,
-    staging.address_extraction_{{ params.region_name }}_stage_2 TMP
+    staging.address_extraction_{{ params.region_name }} TMP
 SET
     full_address = _address,
     postcode =
