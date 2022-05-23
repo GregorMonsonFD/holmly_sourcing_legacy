@@ -62,7 +62,7 @@ with dag:
         postcode_prefix = region["postcode_prefix"]
 
         rightmove_to_csv = PythonOperator(
-            task_id=f'rightmove_{ rightmove_region }_to_csv',
+            task_id=f'rightmove_{ region_name }_to_csv',
             provide_context=True,
             python_callable=get_for_sale_properties,
             execution_timeout=datetime.timedelta(seconds=300),
@@ -73,7 +73,7 @@ with dag:
         )
 
         sftp_upload_to_db = SFTPOperator(
-            task_id=f"sftp_{ rightmove_region }_pi_to_warehouse",
+            task_id=f"sftp_{ region_name }_pi_to_warehouse",
             ssh_conn_id="sftp_default",
             local_filepath="/home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
             remote_filepath="/var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
