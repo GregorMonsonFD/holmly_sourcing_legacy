@@ -30,7 +30,7 @@ def mysql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
         },
         mysql_conn_id="mysql_warehouse",
         retries=3,
-        dag=dag)
+    )
 
 SQL_files = (
         [
@@ -69,7 +69,6 @@ for region in config.get('imports'):
             op_kwargs={'borough': rightmove_region},
             params={'rightmove_region': rightmove_region},
             retries=2,
-            dag=dag,
         )
 
         sftp_upload_to_db = SFTPOperator(
@@ -81,7 +80,6 @@ for region in config.get('imports'):
             create_intermediate_dirs=True,
             params={'rightmove_region': rightmove_region},
             retries=3,
-            dag=dag
         )
 
         rightmove_to_csv >> sftp_upload_to_db
