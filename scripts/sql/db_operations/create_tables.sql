@@ -15,6 +15,7 @@ CREATE TABLE staging.{{ params.region_name }}
     ID bigint,
     full_address varchar(256),
     postcode varchar(10),
+    city varchar(32),
     number_of_beds smallint,
     links varchar(256),
     description varchar(128),
