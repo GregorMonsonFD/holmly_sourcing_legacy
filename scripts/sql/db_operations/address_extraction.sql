@@ -7,7 +7,7 @@ SELECT
 FROM landing.{{ params.region_name }}{{ ds_nodash }};
 
 CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}_stage_2
-SELECT _ID, _postcode FROM staging.address_extraction_{{ params.region_name }}_stage_1
+SELECT * FROM staging.address_extraction_{{ params.region_name }}_stage_1
 WHERE _postcode REGEXP '[0-9]';
 
 UPDATE
