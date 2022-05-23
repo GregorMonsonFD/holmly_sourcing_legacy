@@ -3,3 +3,8 @@ imports:
     rightmove_region: '5E475'
     region_name: 'edinburgh'
     postcode_prefix: 'EH'
+
+  - is_active: True
+      rightmove_region: '5E550'
+      region_name: 'glasgow'
+      postcode_prefix: 'G'
