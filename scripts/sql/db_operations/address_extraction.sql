@@ -17,7 +17,7 @@ SET
     postcode =
     IF
     (
-        LENGTH(_postcode) < 6,
+        LENGTH(_postcode) < 8,
         CONCAT('{{ params.postcode_prefix }}', _postcode),
         null
     )
