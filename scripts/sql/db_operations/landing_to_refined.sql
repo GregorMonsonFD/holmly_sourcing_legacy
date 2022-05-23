@@ -21,8 +21,8 @@ DROP TEMPORARY TABLE IF EXISTS staging.staging_to_refined_testing_{{ params.regi
 
 CREATE TEMPORARY TABLE staging.staging_to_refined_new_{{ params.region_name }}
 SELECT staging.{{ params.region_name }}.* FROM staging.{{ params.region_name }}
-LEFT JOIN landing.{{ params.region_name }}{{ ds_nodash }}
-ON staging.{{ params.region_name }}.ID = landing.{{ params.region_name }}{{ ds_nodash }}.ID
+LEFT JOIN refined.ingested_for_sale_houses
+ON staging.{{ params.region_name }}.ID = refined.ingested_for_sale_houses.ID
 ;
 
 INSERT INTO refined.ingested_for_sale_houses(ID, full_address, postcode, city, number_of_beds, links, description, price, first_seen, last_seen, seen_last_ingestion)
