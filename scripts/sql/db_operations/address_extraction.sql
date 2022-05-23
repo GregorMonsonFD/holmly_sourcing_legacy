@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS staging.address_extraction_{{ params.region_name }}
+DROP TABLE IF EXISTS staging.address_extraction_{{ params.region_name }};
 CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}
 SELECT
     ID AS _ID,
