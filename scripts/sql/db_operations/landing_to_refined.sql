@@ -1,5 +1,5 @@
 UPDATE
-    staging.{{ params.region_name }} STG
+    staging.{{ params.region_name }} STG,
     refined.ingested_for_sale_houses TGT
 SET
     TGT.ID                  = STG.ID,
