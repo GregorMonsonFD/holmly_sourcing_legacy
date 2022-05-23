@@ -10,7 +10,7 @@ SET
     TGT.links               = STG.links,
     TGT.description         = STG.description,
     TGT.price               = STG.price
-    TGT.last_seen           = {{ ts }}
+    TGT.last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H-%M-%S") }}'
     TGT.seen_last_ingestion = TRUE
 WHERE
     STG.ID = TGT.ID
