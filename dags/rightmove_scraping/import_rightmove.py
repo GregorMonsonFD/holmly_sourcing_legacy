@@ -91,5 +91,5 @@ for region in config.get('imports'):
 
         sftp_upload_to_db >> mysql_group(SQL_files[0], rightmove_region, region_name, postcode_prefix) >> mysql_group(SQL_files[1], rightmove_region, region_name, postcode_prefix) >> sql_insert_ids
 
-        for i in range(3, 5):
+        for i in range(3, 6):
             sql_insert_ids >> mysql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
