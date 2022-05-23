@@ -11,7 +11,7 @@ args = {
 dag = DAG(
         dag_id='update_all_scripts',
         default_args=args,
-        schedule_interval='None', # make this workflow happen every day
+        schedule_interval=None, # make this workflow happen every day
     )
 
 with dag:
