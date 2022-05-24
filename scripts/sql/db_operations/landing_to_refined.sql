@@ -49,5 +49,4 @@ SET
     seen_last_ingestion = FALSE
 WHERE
     STG.ID != TGT.ID
-AND STG.city = TGT.city
 ;
