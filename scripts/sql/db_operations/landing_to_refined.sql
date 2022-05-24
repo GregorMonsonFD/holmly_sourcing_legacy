@@ -23,7 +23,7 @@ CREATE TEMPORARY TABLE staging.staging_to_refined_new_{{ params.region_name }}
 SELECT staging.{{ params.region_name }}.* FROM staging.{{ params.region_name }}
 LEFT JOIN refined.ingested_for_sale_houses
 ON staging.{{ params.region_name }}.ID = refined.ingested_for_sale_houses.ID
-WHERE refined.ingested_for_sale_houses.ID = NULL
+WHERE refined.ingested_for_sale_houses.ID IS NULL
 ;
 
 INSERT INTO refined.ingested_for_sale_houses(ID, full_address, postcode, city, number_of_beds, links, description, price, first_seen, last_seen, seen_last_ingestion)
