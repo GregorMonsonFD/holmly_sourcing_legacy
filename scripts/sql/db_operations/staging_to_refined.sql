@@ -49,6 +49,6 @@ ON TGT.ID = STG.ID
 SET
     TGT.seen_last_ingestion = FALSE
 WHERE
-    TGT.ID IS NULL
+    STG.ID IS NULL
 AND TGT.city = {{ params.region_name }}
 ;
