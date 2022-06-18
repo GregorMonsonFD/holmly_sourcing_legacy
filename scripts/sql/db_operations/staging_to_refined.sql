@@ -20,7 +20,7 @@ DROP TEMPORARY TABLE IF EXISTS staging.staging_to_refined_new_{{ params.region_n
 CREATE TEMPORARY TABLE staging.staging_to_refined_new_{{ params.region_name }}
 SELECT 
     STG.*, 
-    TGT.* 
+    TGT.ID as refined_id
 FROM staging.{{ params.region_name }} STG
 LEFT JOIN refined.ingested_for_sale_houses TGT
 ON STG.ID = TGT.ID
@@ -45,9 +45,10 @@ FROM staging.staging_to_refined_new_{{ params.region_name }} STG
 
 UPDATE      refined.ingested_for_sale_houses TGT
 LEFT JOIN   staging.staging_to_refined_new_{{ params.region_name }} STG
+ON TGT.ID = STG.ID
 SET
     TGT.seen_last_ingestion = FALSE
 WHERE
     TGT.ID IS NULL
-AND TGT.city = STG.city
+AND TGT.city = {{ params.region_name }}
 ;
