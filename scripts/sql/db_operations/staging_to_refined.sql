@@ -1,6 +1,6 @@
-UPDATE
-    staging.{{ params.region_name }} STG,
-    refined.ingested_for_sale_houses TGT
+UPDATE      staging.{{ params.region_name }} STG
+LEFT JOIN   refined.ingested_for_sale_houses TGT
+ON STG.ID = TGT.ID
 SET
     TGT.ID                  = STG.ID,
     TGT.full_address        = STG.full_address,
@@ -42,11 +42,10 @@ SELECT
 FROM staging.staging_to_refined_new_{{ params.region_name }} STG
 ;
 
-UPDATE
-    refined.ingested_for_sale_houses TGT,
-    staging.staging_to_refined_new_{{ params.region_name }} STG
+UPDATE      refined.ingested_for_sale_houses TGT
+LEFT JOIN   staging.staging_to_refined_new_{{ params.region_name }} STG
 SET
     seen_last_ingestion = FALSE
 WHERE
-    STG.ID != TGT.ID
+    TGT.ID IS NULL
 ;

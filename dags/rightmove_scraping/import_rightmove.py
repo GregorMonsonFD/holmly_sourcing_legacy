@@ -40,7 +40,7 @@ SQL_files = (
             'price_conversion.sql',
             'updating_static_fields.sql',
             'address_extraction.sql',
-            'landing_to_refined.sql'
+            'staging_to_refined.sql'
         ]
         )
 
