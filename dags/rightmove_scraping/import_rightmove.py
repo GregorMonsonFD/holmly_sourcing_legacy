@@ -86,12 +86,12 @@ for region in config.get('imports'):
         )
 
         delete_csv_local = BashOperator(
-            task_id='delete_{ region_name }_csv_local',
+            task_id=f'delete_{ region_name }_csv_local',
             bash_command='rm /home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv'
         )
 
         delete_csv_remote = SSHOperator(
-            task_id="delete_{ region_name }_csv_remote",
+            task_id=f'delete_{ region_name }_csv_remote',
             ssh_conn_id='ssh_eggzo_media',
             command='rm /var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv',
         )
