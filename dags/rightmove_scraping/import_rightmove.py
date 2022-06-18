@@ -3,7 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
-from scripts.python.rightmove_scrape import get_for_sale_properties
+from airflow.scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime, os, yaml
 
 args = {
