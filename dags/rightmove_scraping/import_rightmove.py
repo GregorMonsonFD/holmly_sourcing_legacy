@@ -1,5 +1,5 @@
 from airflow.models import DAG
-from airflow.contrib.hooks import SSHHook
+from airflow.contrib.operators.ssh_operator import SSHOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.operators.bash_operator import BashOperator
@@ -7,8 +7,6 @@ from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
 from scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime, os, yaml
-
-sshHook = SSHHook(conn_id='ssh_eggzo_media')
 
 args = {
     'owner': 'Gregor Monson',
@@ -92,12 +90,11 @@ for region in config.get('imports'):
             bash_command='rm /home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv'
         )
 
-        delete_csv_remote = SSHExecuteOperator(
+        delete_csv_remote = SSHOperator(
             task_id="delete_{ region_name }_csv_remote",
-            bash_command='rm /var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv',
-            ssh_hook=sshHook,
+            ssh_conn_id='ssh_eggzo_media',
+            command='rm /var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv',
         )
-
 
         sql_insert_ids = mysql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
 
