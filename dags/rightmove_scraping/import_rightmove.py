@@ -1,10 +1,14 @@
 from airflow.models import DAG
+from airflow.contrib.hooks import SSHHook
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
+from airflow.operators.bash_operator import BashOperator
 from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
 from scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime, os, yaml
+
+sshHook = SSHHook(conn_id='ssh_eggzo_media')
 
 args = {
     'owner': 'Gregor Monson',
@@ -83,6 +87,18 @@ for region in config.get('imports'):
             retries=3,
         )
 
+        delete_csv_local = BashOperator(
+            task_id='delete_{ region_name }_csv_local',
+            bash_command='rm /home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv'
+        )
+
+        delete_csv_remote = SSHExecuteOperator(
+            task_id="delete_{ region_name }_csv_remote",
+            bash_command='rm /var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv',
+            ssh_hook=sshHook,
+        )
+
+
         sql_insert_ids = mysql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
 
         staging_to_refined = mysql_group(SQL_files[6], rightmove_region, region_name, postcode_prefix)
@@ -93,3 +109,5 @@ for region in config.get('imports'):
 
         for i in range(3, 6):
             sql_insert_ids >> mysql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
+        
+        staging_to_refined >> delete_csv_local >> delete_csv_remote
