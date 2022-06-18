@@ -50,5 +50,5 @@ SET
     TGT.seen_last_ingestion = FALSE
 WHERE
     STG.ID IS NULL
-AND TGT.city = {{ params.region_name }}
+AND TGT.city = '{{ params.region_name }}'
 ;
