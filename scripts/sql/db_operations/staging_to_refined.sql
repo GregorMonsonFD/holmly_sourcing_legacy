@@ -1,6 +1,6 @@
-UPDATE      refined.ingested_for_sale_houses TGT
-SET TGT.seen_last_ingestion = FALSE,
-WHERE TGT.city = '{{ params.region_name }}';
+UPDATE     refined.ingested_for_sale_houses
+SET seen_last_ingestion = FALSE
+WHERE city = '{{ params.region_name }}';
 
 UPDATE      refined.ingested_for_sale_houses TGT
 LEFT JOIN   staging.{{ params.region_name }} STG
