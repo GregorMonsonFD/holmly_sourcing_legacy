@@ -54,6 +54,7 @@ for region in config.get('imports'):
     rightmove_region = region["rightmove_region"]
     region_name = region["region_name"]
     postcode_prefix = region["postcode_prefix"]
+    ds = '{{ ds }}'
 
     globals()[f'rightmove-scrape-{region_name}'] = DAG(
         dag_id=f'rightmove-scrape-{region_name}',
@@ -87,13 +88,13 @@ for region in config.get('imports'):
 
         delete_csv_local = BashOperator(
             task_id=f'delete_{ region_name }_csv_local',
-            bash_command='rm /home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv'
+            bash_command=f'rm /home/eggzo/airflow/tmp_data/sales_data_{ rightmove_region }_{ ds }.csv'
         )
 
         delete_csv_remote = SSHOperator(
             task_id=f'delete_{ region_name }_csv_remote',
             ssh_conn_id='ssh_eggzo_media',
-            command='rm /var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv',
+            command=f'rm /var/lib/mysql-files/sales_data_{ rightmove_region }_{ ds }.csv',
         )
 
         sql_insert_ids = mysql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
