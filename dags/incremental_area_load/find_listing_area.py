@@ -31,8 +31,8 @@ with dag:
         retries=3,
     )
 
-    sftp_download_from_db = SFTPOperator(
-        task_id="sftp_warehouse_to_pi",
+    sftp_download_from_db_floorplan = SFTPOperator(
+        task_id="sftp_download_from_db_floorplan",
         ssh_conn_id="sftp_default",
         local_filepath="/home/eggzo/airflow/tmp_data/area_export_{{ ds_nodash }}.csv",
         remote_filepath="/var/lib/mysql-files/area_export_{{ ds_nodash }}.csv",
@@ -49,8 +49,8 @@ with dag:
         retries=2,
     )
 
-    sftp_upload_to_db = SFTPOperator(
-        task_id="sftp_warehouse_to_pi",
+    sftp_upload_to_db_floorplan = SFTPOperator(
+        task_id="sftp_upload_to_db_floorplan",
         ssh_conn_id="sftp_default",
         local_filepath="/home/eggzo/airflow/tmp_data/area_export_{{ ds_nodash }}_filled.csv",
         remote_filepath="/var/lib/mysql-files/area_export_{{ ds_nodash }}_filled.csv",
