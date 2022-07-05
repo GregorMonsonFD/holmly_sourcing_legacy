@@ -66,5 +66,5 @@ with dag:
         retries=3,
     )
 
-    incremental_new_records_export >> sftp_download_from_db >> find_all_floorplans_incremental
-    find_all_floorplans_incremental >> sftp_upload_to_db >> incremental_new_records_import
+    incremental_new_records_export >> sftp_download_from_db_floorplan >> find_all_floorplans_incremental
+    find_all_floorplans_incremental >> sftp_upload_to_db_floorplan >> incremental_new_records_import
