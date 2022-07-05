@@ -5,7 +5,8 @@ CREATE TEMPORARY TABLE refined.area_export AS
             ID,
             links,
             number_of_floorplans,
-            area
+            area,
+            raw_floorplan_output
         FROM refined.ingested_for_sale_houses
         WHERE number_of_floorplans is null
     )
