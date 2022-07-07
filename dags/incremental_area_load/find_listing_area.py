@@ -31,12 +31,6 @@ with dag:
         retries=3,
     )
 
-    change_perms_csv_remote = SSHOperator(
-            task_id=f'change_perms_csv_remote',
-            ssh_conn_id='ssh_eggzo_media',
-            command=f'sudo chmod 777 /var/lib/mysql-files/area_export_{{ ds_nodash }}.csv',
-    )
-
 
     sftp_download_from_db_floorplan = SFTPOperator(
         task_id="sftp_download_from_db_floorplan",
@@ -73,5 +67,5 @@ with dag:
         retries=3,
     )
 
-    incremental_new_records_export >> change_perms_csv_remote >> sftp_download_from_db_floorplan >> find_all_floorplans_incremental
+    incremental_new_records_export >> sftp_download_from_db_floorplan >> find_all_floorplans_incremental
     find_all_floorplans_incremental >> sftp_upload_to_db_floorplan >> incremental_new_records_import
