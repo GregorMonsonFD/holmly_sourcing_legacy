@@ -20,3 +20,5 @@ FIELDS OPTIONALLY ENCLOSED BY '"'
 TERMINATED BY ','
 ESCAPED BY ''
 LINES TERMINATED BY '\r\n';
+
+SYSTEM sudo chown eggzo:eggzo area_export_{{ ds_nodash }}.csv;
