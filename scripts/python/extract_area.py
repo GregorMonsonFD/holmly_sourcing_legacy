@@ -6,10 +6,14 @@ from pytesseract import pytesseract
 
 
 def get_floorplan_text(rightmove_link: str):
-    floorplan_link = get_floorplan(rightmove_link)[0]
+    floorplan_link = get_floorplan(rightmove_link)
+
+    if len(floorplan_link) == 0:
+        return 0
+
     config = ('-l eng --oem 1 --psm 3')
 
-    img_data = requests.get(floorplan_link).content
+    img_data = requests.get(floorplan_link[0]).content
     with open('tmp_data/floorplan.jpg', 'wb') as handler:
         handler.write(img_data)
 
