@@ -27,6 +27,12 @@ def get_all_areas(ds):
         sq_ft = re.findall(regex_ft, text[0])
         sq_m = re.findall(regex_m, text[0])
 
+        for i in range(len(sq_ft)):
+            sq_ft[i] = sq_ft[i].replace(',', '')
+
+        for i in range(len(sq_m)):
+            sq_ft[i] = sq_ft[i].replace(',', '')
+
         print(sq_ft, sq_m)
 
         if len(sq_ft) != 0:
