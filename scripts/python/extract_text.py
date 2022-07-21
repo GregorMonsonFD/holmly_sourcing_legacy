@@ -1,4 +1,4 @@
-from get_floorplan_link import get_floorplan
+from scripts.python.get_floorplan_link import get_floorplan
 
 import cv2
 import requests
