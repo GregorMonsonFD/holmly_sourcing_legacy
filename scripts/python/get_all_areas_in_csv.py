@@ -28,7 +28,7 @@ def get_all_areas(ds):
             for area in sq_ft:
                 sq_ft_total = sq_ft_total + area
 
-                output_df.append([row[0], row[1], text[1], sq_ft_total, text], ignore_index=True)
+            output_df.append([row[0], row[1], text[1], sq_ft_total, text], ignore_index=True)
         elif len(sq_m) != 0:
             for area in sq_m:
                 sq_ft_total = sq_ft_total + area
