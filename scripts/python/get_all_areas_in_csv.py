@@ -56,3 +56,4 @@ def get_all_areas(ds):
             output_df.append([row[0], row[1], text[1], 'null', text[0]], ignore_index=True)
 
     print(output_df)
+    output_df.to_csv(f"/home/eggzo/airflow/tmp_data/area_export_{ ds }_filled.csv", header=None)
