@@ -24,7 +24,7 @@ def get_floorplan_text(rightmove_link: str):
 
         img = cv2.convertScaleAbs(img, alpha=1.2, beta=-40)
 
-        text = pytesseract.image_to_string(img, config=config)
+        text = str(pytesseract.image_to_string(img, config=config))
 
         return [text, len(floorplan_link)]
 
