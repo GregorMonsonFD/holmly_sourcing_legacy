@@ -26,7 +26,7 @@ def get_floorplan_text(rightmove_link: str):
 
         text = str(pytesseract.image_to_string(img, config=config))
 
-        return [text, len(floorplan_link)]
+        return [text.lower(), len(floorplan_link)]
 
     except:
         return 0
