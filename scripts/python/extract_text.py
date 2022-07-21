@@ -14,10 +14,10 @@ def get_floorplan_text(rightmove_link: str):
     config = ('-l eng --oem 1 --psm 3')
 
     img_data = requests.get(floorplan_link[0]).content
-    with open('tmp_data/floorplan.jpg', 'wb') as handler:
+    with open('/home/eggzo/airflow/tmp_data/floorplan.jpg', 'wb') as handler:
         handler.write(img_data)
 
-    img = cv2.imread('tmp_data/floorplan.jpg')
+    img = cv2.imread('/home/eggzo/airflow/tmp_data/floorplan.jpg')
 
     img = cv2.resize(img, (0, 0), fx=2, fy=2)
 

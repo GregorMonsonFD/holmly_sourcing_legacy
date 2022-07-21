@@ -11,7 +11,7 @@ def get_all_areas(ds):
 
     sq_m_to_ft_factor = 10.7639
 
-    input_df = pd.read_csv(f"tmp_data/area_export_{ ds }.csv", header=None)
+    input_df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/area_export_{ ds }.csv", header=None)
     output_df = pd.DataFrame()
 
     for index, row in input_df.iterrows():
