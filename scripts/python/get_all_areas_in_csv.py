@@ -6,8 +6,8 @@ import pandas as pd
 from extract_text import get_floorplan_text
 
 def get_all_areas(ds):
-    regex_ft = '\d+(?=\s*(?:sq|square)(?:\.\s*|\s*)f)'
-    regex_m = '\d+(?=\s*(?:sq|square)(?:\.\s*|\s*)m)'
+    regex_ft = '[\d\,\.]+(?=\s*(?:sq|square)(?:\.\s*|\s*)f)'
+    regex_m = '[\d\,\.]+(?=\s*(?:sq|square)(?:\.\s*|\s*)m)'
 
     sq_m_to_ft_factor = 10.7639
 
@@ -31,14 +31,23 @@ def get_all_areas(ds):
 
         if len(sq_ft) != 0:
             for area in sq_ft:
-                sq_ft_total = sq_ft_total + int(area)
+                sq_ft_total = sq_ft_total + float(area)
+
+            for area in sq_ft:
+                if area >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
+                    sq_ft_total = max(sq_ft)
 
             output_df.append([row[0], row[1], text[1], sq_ft_total, text[0]], ignore_index=True)
         elif len(sq_m) != 0:
             for area in sq_m:
-                sq_ft_total = sq_ft_total + int(area)
+                sq_ft_total = sq_ft_total + float(area)
+
+            for area in sq_ft:
+                if area >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
+                    sq_ft_total = max(sq_ft)
 
             sq_ft_total = sq_ft_total * sq_m_to_ft_factor
+
 
             output_df.append([row[0], row[1], text[1], sq_ft_total, text[0]], ignore_index=True)
 
