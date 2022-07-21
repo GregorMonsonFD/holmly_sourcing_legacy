@@ -5,9 +5,15 @@ import pandas as pd
 
 from scripts.python.extract_text import get_floorplan_text
 
+
 def clean_up_text(set: list):
     for i in range(len(set)):
         set[i] = set[i].replace(',', '')
+
+        if set[i] == '.':
+            set.pop(i)
+            continue
+
         set[i] = float(set[i])
 
     return set
