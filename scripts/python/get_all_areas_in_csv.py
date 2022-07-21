@@ -34,7 +34,7 @@ def get_all_areas(ds):
                 sq_ft_total = sq_ft_total + float(area)
 
             for area in sq_ft:
-                if area >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
+                if float(area) >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
                     sq_ft_total = max(sq_ft)
 
             output_df.append([row[0], row[1], text[1], sq_ft_total, text[0]], ignore_index=True)
@@ -43,7 +43,7 @@ def get_all_areas(ds):
                 sq_ft_total = sq_ft_total + float(area)
 
             for area in sq_ft:
-                if area >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
+                if float(area) >= (sq_ft_total/2)*0.95 and area <= (sq_ft_total/2)*1.05:
                     sq_ft_total = max(sq_ft)
 
             sq_ft_total = sq_ft_total * sq_m_to_ft_factor
