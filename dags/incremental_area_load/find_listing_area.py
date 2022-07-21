@@ -1,11 +1,9 @@
 from airflow.models import DAG
-from airflow.contrib.operators.ssh_operator import SSHOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
-from airflow.operators.bash_operator import BashOperator
 from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
-from scripts.python.rightmove_scrape import get_for_sale_properties
+from scripts.python.get_all_areas_in_csv import get_all_areas
 import datetime, os, yaml
 
 args = {
@@ -45,9 +43,9 @@ with dag:
     find_all_floorplans_incremental = PythonOperator(
         task_id='find_all_floorplans_incremental',
         provide_context=True,
-        python_callable=get_for_sale_properties,
-        execution_timeout=datetime.timedelta(seconds=600),
-        retries=2,
+        python_callable=get_all_areas,
+        execution_timeout=datetime.timedelta(hours=16),
+        retries=1,
     )
 
     sftp_upload_to_db_floorplan = SFTPOperator(
