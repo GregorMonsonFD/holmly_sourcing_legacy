@@ -27,15 +27,12 @@ def get_all_areas(ds):
         sq_ft = re.findall(regex_ft, text[0])
         sq_m = re.findall(regex_m, text[0])
 
-        for i in range(len(sq_ft)):
-            sq_ft[i] = sq_ft[i].replace(',', '')
-
-        for i in range(len(sq_m)):
-            sq_ft[i] = sq_ft[i].replace(',', '')
-
         print(sq_ft, sq_m)
 
         if len(sq_ft) != 0:
+            for i in range(len(sq_ft)):
+                sq_ft[i] = sq_ft[i].replace(',', '')
+
             for area in sq_ft:
                 sq_ft_total = sq_ft_total + float(area)
 
@@ -45,6 +42,9 @@ def get_all_areas(ds):
 
             output_df.append([row[0], row[1], text[1], sq_ft_total, text[0]], ignore_index=True)
         elif len(sq_m) != 0:
+            for i in range(len(sq_m)):
+                sq_m[i] = sq_m[i].replace(',', '')
+
             for area in sq_m:
                 sq_ft_total = sq_ft_total + float(area)
 
