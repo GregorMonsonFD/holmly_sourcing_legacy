@@ -18,8 +18,11 @@ def get_all_areas(ds):
         sq_ft_total = 0
         text = get_floorplan_text(row[1])
 
+        print(text)
+
         if text == 0:
             output_df.append([row[0], row[1], 0, 'null', 'null'], ignore_index=True)
+            continue
 
         sq_ft = re.findall(regex_ft, text[0])
         sq_m = re.findall(regex_m, text[0])
