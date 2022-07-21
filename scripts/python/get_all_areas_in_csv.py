@@ -9,7 +9,7 @@ def get_all_areas(ds):
     regex_ft = '\d+(?=\s*(?:sq|square)(?:\.\s*|\s*)f)'
     regex_m = '\d+(?=\s*(?:sq|square)(?:\.\s*|\s*)m)'
 
-    df = pd.read_csv("/home/eggzo/airflow/tmp_data/area_export_{ ds }.csv", header=None)
+    df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/area_export_{ ds }.csv", header=None)
 
     #x = re.findall(regex_ft, placeholder_text)
     #y = re.findall(regex_m, placeholder_text)
