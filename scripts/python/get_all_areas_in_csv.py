@@ -10,6 +10,8 @@ def clean_up_text(set: list):
         set[i].replace(',', '')
         set[i] = float(set[i])
 
+    return set
+
 
 def get_all_areas(ds_noodash, **kwargs):
     regex_ft = '[\d\,\.]+(?=\s*(?:sq|square)(?:\.\s*|\s*)f)'
