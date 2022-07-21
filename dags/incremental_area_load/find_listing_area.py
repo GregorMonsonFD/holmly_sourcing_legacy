@@ -44,6 +44,7 @@ with dag:
         task_id='find_all_floorplans_incremental',
         provide_context=True,
         python_callable=get_all_areas,
+        op_kwargs={'ds': '{{ ds_nodash }}'},
         execution_timeout=datetime.timedelta(hours=16),
         retries=1,
     )

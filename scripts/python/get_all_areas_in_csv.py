@@ -13,7 +13,8 @@ def clean_up_text(set: list):
     return set
 
 
-def get_all_areas(ds_noodash, **kwargs):
+def get_all_areas(**kwargs):
+    ds_nodash = kwargs['ds']
     regex_ft = '[\d\,\.]+(?=\s*(?:sq|square)(?:\.\s*|\s*)f)'
     regex_m = '[\d\,\.]+(?=\s*(?:sq|square)(?:\.\s*|\s*)m)'
 
