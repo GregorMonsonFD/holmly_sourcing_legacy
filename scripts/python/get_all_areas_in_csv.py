@@ -3,7 +3,7 @@
 import re
 import pandas as pd
 
-from extract_text import get_floorplan_text
+from scripts.python.extract_text import get_floorplan_text
 
 def clean_up_text(set: list):
     for i in range(len(set)):
