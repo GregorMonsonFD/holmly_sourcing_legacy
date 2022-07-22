@@ -72,7 +72,7 @@ def get_all_areas(**kwargs):
             sq_ft_max = max(sq_m)
 
             if sq_ft_max >= (sq_ft_total / 2) * 0.95 and area <= (sq_ft_total / 2) * 1.05:
-                sq_ft_total = max(sq_ft)
+                sq_ft_total = max(sq_m)
 
             sq_ft_total = sq_ft_total * sq_m_to_ft_factor
 
