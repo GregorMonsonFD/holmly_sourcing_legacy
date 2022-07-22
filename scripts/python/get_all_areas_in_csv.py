@@ -65,12 +65,14 @@ def get_all_areas(**kwargs):
 
         elif len(sq_m) != 0:
 
-            for area in sq_m:
+            for i in range(len(sq_m)):
+                sq_m[i] = sq_m[i] * sq_m_to_ft_factor
                 sq_ft_total = sq_ft_total + area
 
-            for area in sq_ft:
-                if area >= (sq_ft_total / 2) * 0.95 and area <= (sq_ft_total / 2) * 1.05:
-                    sq_ft_total = max(sq_ft)
+            sq_ft_max = max(sq_m)
+
+            if sq_ft_max >= (sq_ft_total / 2) * 0.95 and area <= (sq_ft_total / 2) * 1.05:
+                sq_ft_total = max(sq_ft)
 
             sq_ft_total = sq_ft_total * sq_m_to_ft_factor
 
