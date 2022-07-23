@@ -19,13 +19,12 @@ UPDATE      refined.ingested_for_sale_houses ifs
 LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
 ON          ai.ID = ifs.ID
 SET
-    ifs.number_of_floorplans  = ai.number_of_floorplans
-    IF (
+    ifs.number_of_floorplans  = ai.number_of_floorplans,
+    ifs.area = IF (
         ai.area = 'null',
-        ifs.area = null,
-        ifs.area = CAST(ai.area AS FLOAT)
-    )
-
+        null,
+        CAST(ai.area AS DOUBLE)
+    ) ,
     ifs.raw_floorplan_output  = ai.raw_floorplan_output
 WHERE
     ai.ID = ifs.ID
