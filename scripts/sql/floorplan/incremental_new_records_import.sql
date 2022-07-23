@@ -4,7 +4,7 @@ CREATE TABLE landing.area_import_{{ ds_nodash }}
     ID                      bigint not null,
     links                   varchar(256),
     number_of_floorplans    smallint,
-    area                    smallint,
+    area                    varchar(10),
     raw_floorplan_output    varchar(2048)
 );
 
@@ -20,7 +20,12 @@ LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
 ON          ai.ID = ifs.ID
 SET
     ifs.number_of_floorplans  = ai.number_of_floorplans
-    ifs.area                  = ai.area
+    IF (
+        ai.area = 'null',
+        ifs.area = null,
+        ifs.area = CAST(ai.area AS SMALLINT)
+    )
+
     ifs.raw_floorplan_output  = ai.raw_floorplan_output
 WHERE
     ai.ID = ifs.ID
