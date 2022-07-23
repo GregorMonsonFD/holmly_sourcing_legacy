@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS  landing.area_import_{{ ds_nodash }};
 CREATE TABLE landing.area_import_{{ ds_nodash }}
 (
     ID                      bigint not null,
