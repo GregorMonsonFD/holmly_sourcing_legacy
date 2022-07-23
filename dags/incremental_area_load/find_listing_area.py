@@ -17,7 +17,7 @@ LOCAL_PATH = os.path.dirname(__file__)
 dag = DAG(
         dag_id='find_listing_area',
         default_args=args,
-        schedule_interval='0 0 * * *',
+        schedule_interval='0 1 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/floorplan'],# make this workflow happen every day
     )
 
@@ -61,7 +61,7 @@ with dag:
 
     incremental_new_records_import = MySqlOperator(
         task_id='sql_incremental_load_floorplan_import',
-        sql='incremental_new_records_export.sql',
+        sql='incremental_new_records_import.sql',
         mysql_conn_id="mysql_warehouse",
         retries=3,
     )
