@@ -1,6 +1,7 @@
 CREATE TABLE landing.area_import_{{ ds_nodash }}
 (
     ID                      bigint not null,
+    links                   varchar(256),
     number_of_floorplans    smallint,
     area                    smallint,
     raw_floorplan_output    varchar(2048)
@@ -10,8 +11,7 @@ LOAD DATA INFILE '/var/lib/mysql-files/area_export_{{ ds_nodash }}_filled.csv'
 INTO TABLE landing.area_import_{{ ds_nodash }}
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS
+LINES TERMINATED BY '"\n'
 ;
 
 UPDATE      refined.ingested_for_sale_houses ifs
