@@ -49,32 +49,15 @@ def get_all_areas(**kwargs):
         print(sq_ft, sq_m)
 
         if len(sq_ft) != 0:
-
-            for area in sq_ft:
-                sq_ft_total = sq_ft_total + area
-
             sq_ft_max = max(sq_ft)
 
-            if sq_ft_max >= (sq_ft_total / 2) * 0.95 and area <= (sq_ft_total / 2) * 1.05:
-                sq_ft_total = max(sq_ft)
-
-            tmp_data = [row[0], row[1], text[1], sq_ft_total, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) != 0:
+            sq_ft_max = max(sq_m) * sq_m_to_ft_factor
 
-            for i in range(len(sq_m)):
-                sq_m[i] = sq_m[i] * sq_m_to_ft_factor
-                sq_ft_total = sq_ft_total + area
-
-            sq_ft_max = max(sq_m)
-
-            if sq_ft_max >= (sq_ft_total / 2) * 0.95 and area <= (sq_ft_total / 2) * 1.05:
-                sq_ft_total = max(sq_m)
-
-            sq_ft_total = sq_ft_total * sq_m_to_ft_factor
-
-            tmp_data = [row[0], row[1], text[1], sq_ft_total, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) == 0 and len(sq_ft) == 0:
