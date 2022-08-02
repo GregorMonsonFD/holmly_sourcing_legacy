@@ -44,7 +44,7 @@ with dag:
         task_id='find_all_coordinates_incremental',
         provide_context=True,
         python_callable=get_all_coordinates,
-        op_kwargs={'ds': '{{ ds_nodash }}'},
+        op_kwargs={'ds': '{{ ds_nodash }}', 'api_key': '{{ conn.googlemapsapi.password }}' },
         execution_timeout=datetime.timedelta(hours=16),
         retries=1,
     )
