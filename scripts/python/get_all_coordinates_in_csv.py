@@ -7,7 +7,7 @@ import pandas as pd
 from scripts.python.extract_text import get_floorplan_text
 
 def get_all_coordinates(**kwargs):
-
+    ds_nodash = kwargs['ds']
     input_df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }.csv", header=None)
     output_df = pd.DataFrame(columns=['id', 'longitude', 'latitude'])
 
