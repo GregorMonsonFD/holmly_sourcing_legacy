@@ -13,7 +13,12 @@ def get_all_coordinates(**kwargs):
     for index, row in input_df.iterrows():
 
         geocode_result = gmaps.geocode(row[1])
-        print(geocode_result)
+
+        if not geocode_result:
+            tmp_data = [row[0], 0.0, 0.0]
+            print(tmp_data)
+            output_df.loc[len(output_df)] = tmp_data
+            continue
 
         lng = geocode_result[0]['geometry']['location']['lng']
         lat = geocode_result[0]['geometry']['location']['lat']
