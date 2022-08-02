@@ -8,6 +8,7 @@ def get_all_coordinates(**kwargs):
     input_df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }.csv", header=None)
     output_df = pd.DataFrame(columns=['id', 'longitude', 'latitude'])
 
+    print('{{ conn.googlemapsapi.password }}')
     gmaps = googlemaps.Client(key='{{ conn.googlemapsapi.password }}')
 
     for index, row in input_df.iterrows():
