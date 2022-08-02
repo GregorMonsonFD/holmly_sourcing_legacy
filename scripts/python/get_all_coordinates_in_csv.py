@@ -12,15 +12,15 @@ def get_all_coordinates(**kwargs):
 
     for index, row in input_df.iterrows():
 
-        x = gmaps.geocode(row[1])
+        geocode_result = gmaps.geocode(row[1])
 
-        #tmp_data = [row[0], lng, lat]
-        #print(tmp_data)
+        lng = geocode_result[0]['geometry']['location']['lng']
+        lat = geocode_result[0]['geometry']['location']['lat']
 
-        #output_df.loc[len(output_df)] = tmp_data
+        tmp_data = [row[0], lng, lat]
+        print(tmp_data)
 
-        print(x)
-        break
+        output_df.loc[len(output_df)] = tmp_data
 
     print(output_df)
-    #output_df.to_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }_filled.csv", header=None, index=False)
+    output_df.to_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }_filled.csv", header=None, index=False)
