@@ -1,6 +1,6 @@
 # from get_all_areas_in_csv import get_all_areas
 
-from googlemaps
+import googlemaps
 import pandas as pd
 
 def get_all_coordinates(**kwargs):
