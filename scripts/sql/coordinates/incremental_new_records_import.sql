@@ -17,7 +17,7 @@ UPDATE      refined.ingested_for_sale_houses ifs
 LEFT JOIN   landing.coordinates_import_{{ ds_nodash }} co
 ON          co.ID = ifs.ID
 SET
-    ifs.longitude   = co.longitude
+    ifs.longitude   = co.longitude,
     ifs.latitude    = co.latitude
 WHERE
     co.ID = ifs.ID
