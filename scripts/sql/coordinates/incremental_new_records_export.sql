@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS  refined.area_export;
-CREATE TEMPORARY TABLE refined.area_export AS
+DROP TABLE IF EXISTS  refined.coordinates_export;
+CREATE TEMPORARY TABLE refined.coordinates_export AS
     (
         SELECT
             ID,

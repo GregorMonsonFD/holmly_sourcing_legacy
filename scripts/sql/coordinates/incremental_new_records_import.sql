@@ -7,7 +7,7 @@ CREATE TABLE landing.coordinates_import_{{ ds_nodash }}
 );
 
 LOAD DATA INFILE '/var/lib/mysql-files/coordinates_export_{{ ds_nodash }}_filled.csv'
-INTO TABLE landing.area_import_{{ ds_nodash }}
+INTO TABLE landing.coordinates_import_{{ ds_nodash }}
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
