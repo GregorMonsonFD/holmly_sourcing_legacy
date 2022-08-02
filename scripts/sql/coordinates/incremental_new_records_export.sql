@@ -6,6 +6,7 @@ CREATE TEMPORARY TABLE refined.coordinates_export AS
             full_address
         FROM refined.ingested_for_sale_houses
         WHERE longitude is null
+        LIMIT 2000
     )
 ;
 
