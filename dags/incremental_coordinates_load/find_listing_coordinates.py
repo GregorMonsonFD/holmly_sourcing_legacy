@@ -2,10 +2,8 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.operators.mysql_operator import MySqlOperator
+from scripts.python.get_all_coordinates_in_csv import get_all_coordinates
 from airflow.utils.dates import days_ago
-
-
-
 import datetime, os, yaml
 
 args = {
@@ -45,7 +43,7 @@ with dag:
     find_all_coordinatess_incremental = PythonOperator(
         task_id='find_all_coordinates_incremental',
         provide_context=True,
-        python_callable=get_all_coordinatess,
+        python_callable=get_all_coordinates,
         op_kwargs={'ds': '{{ ds_nodash }}'},
         execution_timeout=datetime.timedelta(hours=16),
         retries=1,
