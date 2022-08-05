@@ -8,8 +8,8 @@ import datetime, os, yaml
 
 args = {
     'owner': 'Gregor Monson',
-    'start_date': days_ago(0),
-    'yesterday': days_ago(1), # make start date in the past
+    'start_date': days_ago(1),
+    'yesterday': days_ago(2), # make start date in the past
 }
 
 LOCAL_PATH = os.path.dirname(__file__)
