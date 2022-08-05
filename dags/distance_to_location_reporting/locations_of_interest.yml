@@ -6,11 +6,11 @@ locations:
     long: '-3.192063'
 
   - is_active: True
-      location_name: 'glasgow queen street'
-      lat: '55.8626523'
-      long: '-4.2552171'
+    location_name: 'glasgow queen street'
+    lat: '55.8626523'
+    long: '-4.2552171'
 
   - is_active: True
-      location_name: 'partick train station'
-      lat: '55.8698743'
-      long: '-4.3109796'
+    location_name: 'partick train station'
+    lat: '55.8698743'
+    long: '-4.3109796'
