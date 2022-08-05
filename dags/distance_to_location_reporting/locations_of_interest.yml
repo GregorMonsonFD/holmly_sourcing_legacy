@@ -14,3 +14,8 @@ locations:
     location_name: 'partick train station'
     lat: '55.8698743'
     long: '-4.3109796'
+
+  - is_active: True
+    location_name: 'larbert train station'
+    lat: '56.0221502'
+    long: '-3.8307561'
