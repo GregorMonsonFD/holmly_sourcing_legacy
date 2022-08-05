@@ -60,7 +60,7 @@ CREATE TEMPORARY TABLE staging.{{ params.location }}_analysis_final AS
                longitude,
                latitude
         FROM staging.{{ params.location }}_analysis_staging
-        WHERE distance_in_km < 1
+        WHERE distance_in_km < 3
     );
 
 INSERT INTO reporting.{{ params.location }}
