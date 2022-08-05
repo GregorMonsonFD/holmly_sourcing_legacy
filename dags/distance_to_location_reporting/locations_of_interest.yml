@@ -1,0 +1,6 @@
+locations:
+
+  - is_active: True
+    location_name: 'edinburgh waverly'
+    lat: '55.9519531'
+    long: '-3.192063'
