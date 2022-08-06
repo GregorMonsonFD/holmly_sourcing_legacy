@@ -19,3 +19,8 @@ locations:
     location_name: 'larbert train station'
     lat: '56.0221502'
     long: '-3.8307561'
+
+  - is_active: True
+    location_name: 'haymarket train station'
+    lat: '55.945626'
+    long: '-3.2204702'
