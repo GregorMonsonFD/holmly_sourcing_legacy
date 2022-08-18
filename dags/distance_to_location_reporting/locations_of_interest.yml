@@ -24,3 +24,13 @@ locations:
     location_name: 'haymarket train station'
     lat: '55.945626'
     long: '-3.2204702'
+
+  - is_active: True
+    location_name: 'st georges cross'
+    lat: '55.8704684'
+    long: '-4.2845954'
+
+  - is_active: True
+    location_name: 'hillhead'
+    lat: '55.8743138'
+    long: '-4.3106819'
