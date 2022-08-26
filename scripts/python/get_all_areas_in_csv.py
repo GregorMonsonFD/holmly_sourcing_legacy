@@ -15,7 +15,7 @@ def clean_up_text(set: list):
             continue
 
         if set[i][0] == '.':
-            set[i][0] = ''
+            set[i] = set[i][1:]
 
         set[i] = float(set[i])
 
