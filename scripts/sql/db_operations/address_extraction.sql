@@ -23,26 +23,21 @@ UPDATE
 SET
     full_address = _address,
     postcode =
-    REPLACE
+    IF
     (
         IF
         (
-            IF
-            (
-                LENGTH(_postcode) < 10,
-                CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
-                null
-            ) < 10,
-            IF
-            (
-                LENGTH(_postcode) < 10,
-                CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
-                null
-            ),
+            LENGTH(_postcode) < 10,
+            CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
+            null
+        ) < 10,
+        IF
+        (
+            LENGTH(_postcode) < 10,
+            CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
             null
         ),
-        '\'',
-        ''
+        null
     )
 WHERE
     ID = _ID
