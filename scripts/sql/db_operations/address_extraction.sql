@@ -3,7 +3,7 @@ CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}
 SELECT
     ID AS _ID,
     address AS _address,
-    reverse(SUBSTRING_INDEX(reverse(address), reverse('{{ params.postcode_prefix }}'), 1)) AS _postcode
+    reverse(SUBSTRING_INDEX(reverse(address), reverse('{{ params.postcode_prefix }}'), 1)) AS _postcode::TEXT
 FROM landing.{{ params.region_name }}{{ ds_nodash }};
 
 
@@ -25,18 +25,8 @@ SET
     postcode =
     IF
     (
-        IF
-        (
-            LENGTH(_postcode) < 10,
-            CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
-            null
-        ) < 10,
-        IF
-        (
-            LENGTH(_postcode) < 10,
-            CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
-            null
-        ),
+        LENGTH(_postcode) < 10,
+        CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
         null
     )
 WHERE
