@@ -14,8 +14,8 @@ CREATE TABLE reporting.{{ params.location }} (
     , latitude              double precision
 );
 
-DROP TABLE IF EXISTS staging.{{ params.location }}_analysis_staging;
-CREATE TEMPORARY TABLE staging.{{ params.location }}_analysis_staging AS
+DROP TABLE IF EXISTS {{ params.location }}_analysis_staging;
+CREATE TEMPORARY TABLE {{ params.location }}_analysis_staging AS
     (
         SELECT
             (price/area) as price_per_sq_ft,
@@ -41,8 +41,8 @@ CREATE TEMPORARY TABLE staging.{{ params.location }}_analysis_staging AS
         ORDER BY distance_in_km asc
     );
 
-DROP TABLE IF EXISTS staging.{{ params.location }}_analysis_final;
-CREATE TEMPORARY TABLE staging.{{ params.location }}_analysis_final AS
+DROP TABLE IF EXISTS {{ params.location }}_analysis_final;
+CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
     (
         SELECT (1/(price_per_sq_ft * distance_in_km)) as score,
                price_per_sq_ft,
