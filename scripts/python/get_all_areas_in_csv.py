@@ -30,7 +30,7 @@ def get_all_areas(**kwargs):
     sq_m_to_ft_factor: float = 10.7639
 
     input_df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/area_export_{ ds_nodash }.csv", header=None)
-    output_df = pd.DataFrame(columns=['id', 'link', 'number_of_floorplans', 'area', 'text'])
+    output_df = pd.DataFrame(columns=['id', 'link', 'number_of_floorplans', 'area'])
 
     for index, row in input_df.iterrows():
         sq_ft_total = 0.0
