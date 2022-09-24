@@ -54,17 +54,17 @@ def get_all_areas(**kwargs):
         if len(sq_ft) != 0:
             sq_ft_max = max(sq_ft)
 
-            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) != 0:
             sq_ft_max = max(sq_m) * sq_m_to_ft_factor
 
-            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) == 0 and len(sq_ft) == 0:
-            tmp_data = [row[0], row[1], text[1], 'null', text[0]]
+            tmp_data = [row[0], row[1], text[1], 'null']
             output_df.loc[len(output_df)] = tmp_data
 
     print(output_df)
