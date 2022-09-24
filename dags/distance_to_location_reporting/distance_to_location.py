@@ -25,7 +25,7 @@ def report_sql(location_name, lat, long):
             'lat': lat,
             'long': long
         },
-        mysql_conn_id="holmly-postgresql",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 
