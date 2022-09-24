@@ -39,7 +39,7 @@ def get_all_areas(**kwargs):
         print(text)
 
         if text == 0:
-            tmp_data = [row[0], row[1], 0, 'null', 'null']
+            tmp_data = [row[0], row[1], 0, 'null']
             output_df.loc[len(output_df)] = tmp_data
             continue
 
