@@ -1,5 +1,5 @@
 from airflow.models import DAG
-from airflow.operators.mysql_operator import MySqlOperator
+from airflow.operators.mysql_operator import PostgresOperator
 from airflow.utils.dates import days_ago
 import os, yaml
 
@@ -17,7 +17,7 @@ with open(config_file, "r") as infile:
 
 
 def report_sql(location_name, lat, long):
-    return MySqlOperator(
+    return PostgresOperator(
         task_id='{}_reporting'.format(location_name),
         sql='distance_scoring.sql',
         params={
@@ -25,7 +25,7 @@ def report_sql(location_name, lat, long):
             'lat': lat,
             'long': long
         },
-        mysql_conn_id="mysql_warehouse",
+        mysql_conn_id="holmly-postgresql",
         retries=3,
     )
 
