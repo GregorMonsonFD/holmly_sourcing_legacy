@@ -1,5 +1,5 @@
 from airflow.models import DAG
-from airflow.operators.mysql_operator import PostgresOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.utils.dates import days_ago
 import os, yaml
 
