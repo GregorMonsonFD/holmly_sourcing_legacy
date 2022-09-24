@@ -49,7 +49,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
                distance_in_km,
                price,
                full_address,
-               number_of_   qbeds,
+               number_of_beds,
                links,
                postcode,
                seen_last_ingestion,
