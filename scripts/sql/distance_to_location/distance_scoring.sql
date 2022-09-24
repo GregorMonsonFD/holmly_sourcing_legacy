@@ -37,7 +37,7 @@ CREATE TEMPORARY TABLE staging.{{ params.location }}_analysis_staging AS
             longitude,
             latitude
         FROM refined.ingested_for_sale_houses
-        WHERE     seen_last_ingestion = 1
+        WHERE     seen_last_ingestion = True
         ORDER BY distance_in_km asc
     );
 
