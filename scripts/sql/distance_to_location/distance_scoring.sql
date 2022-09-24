@@ -56,7 +56,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
                area,
                longitude,
                latitude
-        FROM staging.{{ params.location }}_analysis_staging
+        FROM {{ params.location }}_analysis_staging
         WHERE distance_in_km < 3
     );
 
