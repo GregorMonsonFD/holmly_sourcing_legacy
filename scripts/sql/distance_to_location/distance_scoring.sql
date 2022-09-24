@@ -61,7 +61,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
     );
 
 INSERT INTO reporting.{{ params.location }}
-SELECT * FROM staging.{{ params.location }}_analysis_final
+SELECT * FROM {{ params.location }}_analysis_final
 ORDER BY score desc
 ;
 
