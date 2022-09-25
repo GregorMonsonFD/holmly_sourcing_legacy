@@ -15,7 +15,7 @@ def get_all_coordinates(**kwargs):
         geocode_result = gmaps.geocode(row[1])
 
         if not geocode_result:
-            tmp_data = [int(row[0]), 0.0, 0.0]
+            tmp_data = [row[0], 0.0, 0.0]
             print(tmp_data)
             output_df.loc[len(output_df)] = tmp_data
             continue
@@ -23,10 +23,12 @@ def get_all_coordinates(**kwargs):
         lng = geocode_result[0]['geometry']['location']['lng']
         lat = geocode_result[0]['geometry']['location']['lat']
 
-        tmp_data = [int(row[0]), lng, lat]
+        tmp_data = [row[0], lng, lat]
         print(tmp_data)
 
         output_df.loc[len(output_df)] = tmp_data
+
+    output_df['id'] = output_df['id'].astype(int)
 
     print(output_df)
     output_df.to_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }_filled.csv", header=None, index=False)
