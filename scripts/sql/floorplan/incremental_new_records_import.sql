@@ -11,17 +11,16 @@ COPY landing.area_import_{{ ds_nodash }}
 FROM '/tmp/area_export_filled/area_export_{{ ds_nodash }}_filled.csv'
 DELIMITER ','
 ESCAPE '"'
-NULL '\N'
+NULL 'null'
 CSV
 ;
 
-UPDATE      refined.ingested_for_sale_houses ifsOG
+UPDATE refined.ingested_for_sale_houses
 SET
-    ifsOG.number_of_floorplans  = ai.number_of_floorplans,
-    ifsOG.area = ai.area
+    number_of_floorplans  = ai.number_of_floorplans,
+    area = ai.area
 FROM refined.ingested_for_sale_houses ifs
 LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
-ON          ai.ID = ifs.ID
-WHERE
-    ai.ID = ifs.ID
+ON      ai.ID = ifs.ID
+WHERE   ai.ID = ifs.ID
 ;
