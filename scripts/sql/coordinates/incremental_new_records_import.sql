@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS  landing.coordinates_import_{{ ds_nodash }};
 CREATE TABLE landing.coordinates_import_{{ ds_nodash }}
 (
     ID                      bigint not null,
-    longitude               double,
-    latitude                double
+    longitude               double precision,
+    latitude                double precision
 );
 
 COPY landing.coordinates_import_{{ ds_nodash }}
