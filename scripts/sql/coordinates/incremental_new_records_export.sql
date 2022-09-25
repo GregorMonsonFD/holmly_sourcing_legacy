@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS  refined.coordinates_export;
-CREATE TEMPORARY TABLE refined.coordinates_export AS
+DROP TABLE IF EXISTS  coordinates_export;
+CREATE TEMPORARY TABLE coordinates_export AS
     (
         SELECT
             ID,
@@ -10,11 +10,10 @@ CREATE TEMPORARY TABLE refined.coordinates_export AS
     )
 ;
 
-SELECT
-    *
-FROM refined.coordinates_export
-INTO OUTFILE '/var/lib/mysql-files/coordinates_export_{{ ds_nodash }}.csv'
-FIELDS OPTIONALLY ENCLOSED BY '"'
-TERMINATED BY ','
-ESCAPED BY ''
-LINES TERMINATED BY '\r\n';
+COPY coordinates_export
+TO '/tmp/coordinates_export/coordinates_export_{{ ds_nodash }}.csv'
+DELIMITER ','
+ESCAPE '"'
+NULL '\N'
+CSV
+;
