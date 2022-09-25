@@ -25,7 +25,7 @@ with dag:
     incremental_new_records_export = PostgresOperator(
         task_id='sql_incremental_load_coordinates_export',
         sql='incremental_new_records_export.sql',
-        mysql_conn_id="holmly-postgresql",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 
@@ -62,7 +62,7 @@ with dag:
     incremental_new_records_import = PostgresOperator(
         task_id='sql_incremental_load_coordinates_import',
         sql='incremental_new_records_import.sql',
-        mysql_conn_id="holmly-postgresql",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 
