@@ -16,8 +16,8 @@ CSV
 
 UPDATE refined.ingested_for_sale_houses
 SET
-    ifs.longitude   = co.longitude,
-    ifs.latitude    = co.latitude
+    longitude   = co.longitude,
+    latitude    = co.latitude
 FROM        refined.ingested_for_sale_houses ifs
 LEFT JOIN   landing.coordinates_import_{{ ds_nodash }} co
 ON          co.ID = ifs.ID
