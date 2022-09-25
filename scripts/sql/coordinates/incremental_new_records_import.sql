@@ -7,7 +7,7 @@ CREATE TABLE landing.coordinates_import_{{ ds_nodash }}
 );
 
 COPY landing.coordinates_import_{{ ds_nodash }}
-FROM '/tmp/coordinates_export/coordinates_export_{{ ds_nodash }}_filled.csv'
+FROM '/tmp/coordinates_export_filled/coordinates_export_{{ ds_nodash }}_filled.csv'
 DELIMITER ','
 ESCAPE '"'
 NULL 'null'

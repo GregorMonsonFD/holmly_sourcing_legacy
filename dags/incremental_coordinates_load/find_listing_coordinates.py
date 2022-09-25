@@ -53,7 +53,7 @@ with dag:
         task_id="sftp_upload_to_db_coordinates",
         ssh_conn_id="holmly_sftp",
         local_filepath="/home/eggzo/airflow/tmp_data/coordinates_export_{{ ds_nodash }}_filled.csv",
-        remote_filepath="/tmp/coordinates_export/coordinates_export_{{ ds_nodash }}_filled.csv",
+        remote_filepath="/tmp/coordinates_export_filled/coordinates_export_{{ ds_nodash }}_filled.csv",
         operation="put",
         create_intermediate_dirs=True,
         retries=3,
