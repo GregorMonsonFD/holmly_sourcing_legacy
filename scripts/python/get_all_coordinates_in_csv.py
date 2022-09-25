@@ -30,5 +30,7 @@ def get_all_coordinates(**kwargs):
 
     output_df['id'] = output_df['id'].astype(int)
 
+    output_df['id'] = output_df['id'].astype(int)
+
     print(output_df)
     output_df.to_csv(f"/home/eggzo/airflow/tmp_data/coordinates_export_{ ds_nodash }_filled.csv", header=None, index=False)
