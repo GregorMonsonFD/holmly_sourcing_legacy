@@ -4,7 +4,7 @@ CREATE TABLE landing.area_import_{{ ds_nodash }}
     ID                      bigint not null,
     links                   varchar(256),
     number_of_floorplans    smallint,
-    area                    varchar(128)
+    area                    double precision
 );
 
 COPY landing.area_import_{{ ds_nodash }}
@@ -15,16 +15,13 @@ NULL '\N'
 CSV
 ;
 
-UPDATE      refined.ingested_for_sale_houses ifs
+UPDATE      refined.ingested_for_sale_houses ifsOG
+SET
+    ifsOG.number_of_floorplans  = ai.number_of_floorplans,
+    ifsOG.area = ai.area
+FROM refined.ingested_for_sale_houses ifs
 LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
 ON          ai.ID = ifs.ID
-SET
-    ifs.number_of_floorplans  = ai.number_of_floorplans,
-    ifs.area = IF (
-        ai.area = 'null',
-        null,
-        CAST(ai.area AS DOUBLE PRECISION)
-    )
 WHERE
     ai.ID = ifs.ID
 ;
