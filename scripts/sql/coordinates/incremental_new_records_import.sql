@@ -14,12 +14,10 @@ NULL 'null'
 CSV
 ;
 
-UPDATE refined.ingested_for_sale_houses
+UPDATE refined.ingested_for_sale_houses ifs
 SET
     longitude   = co.longitude,
     latitude    = co.latitude
-FROM        refined.ingested_for_sale_houses ifs
-LEFT JOIN   landing.coordinates_import_{{ ds_nodash }} co
-ON          co.ID = ifs.ID
+FROM        landing.coordinates_import_{{ ds_nodash }} co
 WHERE       co.ID = ifs.ID
 ;

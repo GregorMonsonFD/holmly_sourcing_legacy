@@ -15,12 +15,10 @@ NULL 'null'
 CSV
 ;
 
-UPDATE refined.ingested_for_sale_houses
+UPDATE refined.ingested_for_sale_houses ifs
 SET
     number_of_floorplans  = ai.number_of_floorplans,
     area = ai.area
-FROM refined.ingested_for_sale_houses ifs
-LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
-ON      ai.ID = ifs.ID
+FROM    landing.area_import_{{ ds_nodash }} ai
 WHERE   ai.ID = ifs.ID
 ;
