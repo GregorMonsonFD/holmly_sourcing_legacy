@@ -1,4 +1,4 @@
-UPDATE staging.{{ params.region_name }} STG,
+UPDATE staging.{{ params.region_name }} STG
 SET
     STG.number_of_beds = LDN.number_of_beds,
     STG.links = LDN.links,
