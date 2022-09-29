@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS staging.address_extraction_{{ params.region_name }};
-CREATE TEMPORARY TABLE staging.address_extraction_{{ params.region_name }}
+DROP TABLE IF EXISTS address_extraction_{{ params.region_name }};
+CREATE TEMPORARY TABLE address_extraction_{{ params.region_name }}
 SELECT
     ID AS _ID,
     address AS _address,
@@ -7,7 +7,7 @@ SELECT
 FROM landing.{{ params.region_name }}{{ ds_nodash }};
 
 
-UPDATE staging.address_extraction_{{ params.region_name }}
+UPDATE address_extraction_{{ params.region_name }}
 SET _postcode =
     IF
     (
@@ -17,9 +17,7 @@ SET _postcode =
     );
 
 
-UPDATE
-    staging.{{ params.region_name }} STG,
-    staging.address_extraction_{{ params.region_name }} TMP
+UPDATE staging.{{ params.region_name }} STG
 SET
     full_address = _address,
     postcode =
@@ -29,6 +27,7 @@ SET
         CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
         null
     )
+FROM staging.address_extraction_{{ params.region_name }} TMP
 WHERE
     ID = _ID
 ;

@@ -1,15 +1,13 @@
-DROP TABLE IF EXISTS staging.price_conversion_{{ params.region_name }};
+DROP TABLE IF EXISTS price_conversion_{{ params.region_name }};
 
-CREATE TEMPORARY TABLE staging.price_conversion_{{ params.region_name }}
+CREATE TEMPORARY TABLE price_conversion_{{ params.region_name }}
 SELECT
     ID AS _ID,
     REPLACE(REPLACE(price, '£', ''), ',', '') AS price_formatted
 FROM landing.{{ params.region_name }}{{ ds_nodash }}
 ;
 
-UPDATE
-    staging.{{ params.region_name }} STG,
-    staging.price_conversion_{{ params.region_name }} TMP
+UPDATE staging.{{ params.region_name }} STG,
 SET
     price =
         IF
@@ -18,6 +16,7 @@ SET
             price_formatted,
             null
         )
+FROM price_conversion_{{ params.region_name }} TMP
 WHERE
     STG.ID = TMP._ID
 ;

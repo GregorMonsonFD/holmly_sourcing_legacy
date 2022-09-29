@@ -1,9 +1,8 @@
 from airflow.models import DAG
-from airflow.contrib.operators.ssh_operator import SSHOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.bash_operator import BashOperator
-from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import days_ago
 from scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime, os, yaml
@@ -21,8 +20,8 @@ with open(config_file, "r") as infile:
     config = yaml.full_load(infile)
 
 
-def mysql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
-    return MySqlOperator(
+def postgresql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
+    return PostgresOperator(
         task_id='sql_{}_{}'.format(name[:-4], region_name),
         sql=name,
         params={
@@ -30,7 +29,7 @@ def mysql_group(name, rightmove_region, region_name, postcode_prefix, **kwargs):
             'region_name': region_name,
             'postcode_prefix': postcode_prefix
         },
-        mysql_conn_id="mysql_warehouse",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 
@@ -79,7 +78,7 @@ for region in config.get('imports'):
             task_id=f"sftp_{ region_name }_pi_to_warehouse",
             ssh_conn_id="sftp_default",
             local_filepath="/home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
-            remote_filepath="/var/lib/mysql-files/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
+            remote_filepath="/tmp/rightmove_scrape/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
             operation="put",
             create_intermediate_dirs=True,
             params={'rightmove_region': rightmove_region},
@@ -91,21 +90,15 @@ for region in config.get('imports'):
             bash_command=f'rm /home/eggzo/airflow/tmp_data/sales_data_{ rightmove_region }_{ ds }.csv'
         )
 
-        delete_csv_remote = SSHOperator(
-            task_id=f'delete_{ region_name }_csv_remote',
-            ssh_conn_id='ssh_eggzo_media',
-            command=f'rm /var/lib/mysql-files/sales_data_{ rightmove_region }_{ ds }.csv',
-        )
+        sql_insert_ids = postgresql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
 
-        sql_insert_ids = mysql_group(SQL_files[2], rightmove_region, region_name, postcode_prefix)
-
-        staging_to_refined = mysql_group(SQL_files[6], rightmove_region, region_name, postcode_prefix)
+        staging_to_refined = postgresql_group(SQL_files[6], rightmove_region, region_name, postcode_prefix)
 
         rightmove_to_csv >> sftp_upload_to_db
 
-        sftp_upload_to_db >> mysql_group(SQL_files[0], rightmove_region, region_name, postcode_prefix) >> mysql_group(SQL_files[1], rightmove_region, region_name, postcode_prefix) >> sql_insert_ids
+        sftp_upload_to_db >> postgresql_group(SQL_files[0], rightmove_region, region_name, postcode_prefix) >> postgresql_group(SQL_files[1], rightmove_region, region_name, postcode_prefix) >> sql_insert_ids
 
         for i in range(3, 6):
-            sql_insert_ids >> mysql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
+            sql_insert_ids >> postgresql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
         
-        staging_to_refined >> delete_csv_local >> delete_csv_remote
+        staging_to_refined >> delete_csv_local

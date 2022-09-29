@@ -3,8 +3,6 @@ SET seen_last_ingestion = FALSE
 WHERE city = '{{ params.region_name }}';
 
 UPDATE      refined.ingested_for_sale_houses TGT
-LEFT JOIN   staging.{{ params.region_name }} STG
-ON STG.ID = TGT.ID
 SET
     TGT.ID                  = STG.ID,
     TGT.full_address        = STG.full_address,
@@ -16,12 +14,13 @@ SET
     TGT.price               = STG.price,
     TGT.last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
     TGT.seen_last_ingestion = TRUE
+FROM staging.{{ params.region_name }} STG
 WHERE
     STG.ID = TGT.ID
 ;
 
-DROP TEMPORARY TABLE IF EXISTS staging.staging_to_refined_new_{{ params.region_name }};
-CREATE TEMPORARY TABLE staging.staging_to_refined_new_{{ params.region_name }}
+DROP TEMPORARY TABLE IF EXISTS staging_to_refined_new_{{ params.region_name }};
+CREATE TEMPORARY TABLE staging_to_refined_new_{{ params.region_name }}
 SELECT 
     STG.*, 
     TGT.ID as refined_id
