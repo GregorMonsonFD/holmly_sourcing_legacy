@@ -11,7 +11,7 @@ UPDATE staging.{{ params.region_name }} STG
 SET
     price =
         CASE
-            WHEN TMP.price_formatted REGEXP '^-?[0-9]+$' THEN price_formatted
+            WHEN TMP.price_formatted like '^-?[0-9]+$' THEN price_formatted
             ELSE null
         END
 FROM price_conversion_{{ params.region_name }} TMP
