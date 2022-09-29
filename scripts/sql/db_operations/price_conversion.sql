@@ -9,7 +9,7 @@ FROM landing.{{ params.region_name }}{{ ds_nodash }}
 
 UPDATE staging.{{ params.region_name }} STG
 SET
-    price = price_formatted
+    price = CAST(price_formatted AS decimal(11,2))
 FROM price_conversion_{{ params.region_name }} TMP
 WHERE
     STG.ID = TMP._ID

@@ -24,7 +24,7 @@ SET
         WHEN LENGTH(_postcode) < 10 THEN CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode)
         ELSE null
     END
-FROM staging.address_extraction_{{ params.region_name }} TMP
+FROM address_extraction_{{ params.region_name }} TMP
 WHERE
     ID = _ID
 ;
