@@ -76,7 +76,7 @@ for region in config.get('imports'):
 
         sftp_upload_to_db = SFTPOperator(
             task_id=f"sftp_{ region_name }_pi_to_warehouse",
-            ssh_conn_id="sftp_default",
+            ssh_conn_id="holmly_sftp",
             local_filepath="/home/eggzo/airflow/tmp_data/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
             remote_filepath="/tmp/rightmove_scrape/sales_data_{{ params.rightmove_region }}_{{ ds }}.csv",
             operation="put",
