@@ -7,7 +7,7 @@ SELECT
 FROM landing.{{ params.region_name }}{{ ds_nodash }}
 ;
 
-UPDATE staging.{{ params.region_name }} STG,
+UPDATE staging.{{ params.region_name }} STG
 SET
     price =
         CASE

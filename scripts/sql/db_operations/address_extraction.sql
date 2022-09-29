@@ -3,7 +3,7 @@ CREATE TEMPORARY TABLE address_extraction_{{ params.region_name }} AS
 SELECT
     ID AS _ID,
     address AS _address,
-    convert(reverse(SUBSTRING_INDEX(reverse(address), reverse('{{ params.postcode_prefix }}'), 1)), CHAR(256)) AS _postcode
+    reverse(split_part(reverse(address), reverse('{{ params.postcode_prefix }}'), 1)) AS _postcode
 FROM landing.{{ params.region_name }}{{ ds_nodash }};
 
 
