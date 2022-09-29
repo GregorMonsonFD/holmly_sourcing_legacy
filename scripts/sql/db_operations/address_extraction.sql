@@ -21,7 +21,7 @@ SET
     full_address = _address,
     postcode =
     CASE
-        WHEN LENGTH(_postcode) < 10 THEN CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode),
+        WHEN LENGTH(_postcode) < 10 THEN CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode)
         ELSE null
     END
 FROM staging.address_extraction_{{ params.region_name }} TMP
