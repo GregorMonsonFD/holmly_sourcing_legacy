@@ -19,8 +19,8 @@ WHERE
     STG.ID = TGT.ID
 ;
 
-DROP TEMPORARY TABLE IF EXISTS staging_to_refined_new_{{ params.region_name }};
-CREATE TEMPORARY TABLE staging_to_refined_new_{{ params.region_name }}
+DROP TABLE IF EXISTS staging_to_refined_new_{{ params.region_name }};
+CREATE TEMPORARY TABLE staging_to_refined_new_{{ params.region_name }} AS
 SELECT 
     STG.*, 
     TGT.ID as refined_id
