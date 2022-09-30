@@ -43,5 +43,5 @@ SELECT
     '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
     '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
     TRUE
-FROM staging.staging_to_refined_new_{{ params.region_name }} STG
+FROM staging_to_refined_new_{{ params.region_name }} STG
 ;
