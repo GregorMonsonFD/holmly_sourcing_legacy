@@ -9,7 +9,10 @@ FROM landing.{{ params.region_name }}{{ ds_nodash }}
 
 UPDATE staging.{{ params.region_name }} STG
 SET
-    price = CAST(price_formatted AS decimal(11,2))
+    price =
+        CASE
+            WHEN price_formatted ~ '^-?[0-9]+$' THEN price_formatted
+        END
 FROM price_conversion_{{ params.region_name }} TMP
 WHERE
     STG.ID = TMP._ID
