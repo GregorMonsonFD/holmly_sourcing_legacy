@@ -11,7 +11,7 @@ UPDATE staging.{{ params.region_name }} STG
 SET
     price =
         CASE
-            WHEN price_formatted ~ '^-?[0-9]+$' THEN price_formatted
+            WHEN price_formatted ~ '^-?[0-9]+$' THEN CAST(price_formatted AS decimal(11, 2))
         END
 FROM price_conversion_{{ params.region_name }} TMP
 WHERE
