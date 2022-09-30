@@ -4,16 +4,16 @@ WHERE city = '{{ params.region_name }}';
 
 UPDATE      refined.ingested_for_sale_houses TGT
 SET
-    TGT.ID                  = STG.ID,
-    TGT.full_address        = STG.full_address,
-    TGT.postcode            = STG.postcode,
-    TGT.city                = STG.city,
-    TGT.number_of_beds      = STG.number_of_beds,
-    TGT.links               = STG.links,
-    TGT.description         = STG.description,
-    TGT.price               = STG.price,
-    TGT.last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
-    TGT.seen_last_ingestion = TRUE
+    ID                  = STG.ID,
+    full_address        = STG.full_address,
+    postcode            = STG.postcode,
+    city                = STG.city,
+    number_of_beds      = STG.number_of_beds,
+    links               = STG.links,
+    description         = STG.description,
+    price               = STG.price,
+    last_seen           = '{{ dag.timezone.convert(execution_date).strftime("%Y-%m-%d %H:%M:%S") }}',
+    seen_last_ingestion = TRUE
 FROM staging.{{ params.region_name }} STG
 WHERE
     STG.ID = TGT.ID
