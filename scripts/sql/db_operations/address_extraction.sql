@@ -10,8 +10,7 @@ FROM landing.{{ params.region_name }}{{ ds_nodash }};
 UPDATE address_extraction_{{ params.region_name }}
 SET _postcode =
     CASE
-        WHEN _postcode like'[0-9]' THEN _postcode
-        ELSE null
+        WHEN _postcode ~ '[0-9]' THEN _postcode
     END
 ;
 
@@ -21,7 +20,7 @@ SET
     full_address = _address,
     postcode =
     CASE
-        WHEN LENGTH(_postcode) < 10 THEN CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode)
+        WHEN LENGTH(_postcode) < 8 THEN CONCAT(REPLACE('{{ params.postcode_prefix }}', ' ', ''), _postcode)
         ELSE null
     END
 FROM address_extraction_{{ params.region_name }} TMP
