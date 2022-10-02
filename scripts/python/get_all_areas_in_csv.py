@@ -8,6 +8,8 @@ from scripts.python.extract_text import get_floorplan_text
 
 def clean_up_text(set: list):
     for i in range(len(set)):
+        print(set[i])
+
         set[i] = set[i].replace(',', '')
 
         if set[i] == '.':
