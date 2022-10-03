@@ -23,7 +23,7 @@ def clean_up_text(set: list):
         return set
 
     except:
-        return 0
+        return []
 
 
 def get_all_areas(**kwargs):
