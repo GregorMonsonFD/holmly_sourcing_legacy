@@ -7,21 +7,23 @@ from scripts.python.extract_text import get_floorplan_text
 
 
 def clean_up_text(set: list):
-    for i in range(len(set)):
-        print(set[i])
+    try:
+        for i in range(len(set)):
+            set[i] = set[i].replace(',', '')
 
-        set[i] = set[i].replace(',', '')
+            if set[i] == '.':
+                set.pop(i)
+                continue
 
-        if set[i] == '.':
-            set.pop(i)
-            continue
+            if set[i][0] == '.':
+                set[i] = set[i][1:]
 
-        if set[i][0] == '.':
-            set[i] = set[i][1:]
+            set[i] = float(set[i])
 
-        set[i] = float(set[i])
+        return set
 
-    return set
+    except:
+        return 0
 
 
 def get_all_areas(**kwargs):
