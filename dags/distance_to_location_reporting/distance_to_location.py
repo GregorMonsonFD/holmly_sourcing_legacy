@@ -16,14 +16,15 @@ with open(config_file, "r") as infile:
     config = yaml.full_load(infile)
 
 
-def report_sql(location_name, lat, long):
+def report_sql(location_name, lat, long, distance_km):
     return PostgresOperator(
         task_id='{}_reporting'.format(location_name),
         sql='distance_scoring.sql',
         params={
             'location': location_name,
             'lat': lat,
-            'long': long
+            'long': long,
+            'distance': distance_km
         },
         postgres_conn_id="holmly-postgresql",
         retries=3,
@@ -46,5 +47,6 @@ with dag:
         location_name = location["location_name"].replace(" ", "_")
         lat = location["lat"]
         long = location["long"]
+        distance_km = location["distance"]
 
-        report_sql(location_name, lat, long)
+        report_sql(location_name, lat, long, distance_km)

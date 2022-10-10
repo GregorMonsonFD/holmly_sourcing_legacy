@@ -4,33 +4,58 @@ locations:
     location_name: 'edinburgh waverley'
     lat: '55.9519531'
     long: '-3.192063'
+    distance: '2'
 
   - is_active: True
     location_name: 'glasgow queen street'
     lat: '55.8626523'
     long: '-4.2552171'
+    distance: '2'
 
   - is_active: True
     location_name: 'partick train station'
     lat: '55.8698743'
     long: '-4.3109796'
+    distance: '2'
 
   - is_active: True
     location_name: 'larbert train station'
     lat: '56.0221502'
     long: '-3.8307561'
+    distance: '2'
 
   - is_active: True
     location_name: 'haymarket train station'
     lat: '55.945626'
     long: '-3.2204702'
+    distance: '2'
 
   - is_active: True
     location_name: 'st georges cross'
     lat: '55.8704684'
     long: '-4.2845954'
+    distance: '2'
 
   - is_active: True
     location_name: 'hillhead'
     lat: '55.8743138'
     long: '-4.3106819'
+    distance: '2'
+
+  - is_active: True
+    location_name: 'stockbridge'
+    lat: '55.9588669'
+    long: '-3.2121052'
+    distance: '1'
+
+  - is_active: True
+    location_name: 'bruntsfield'
+    lat: '55.9373401'
+    long: '-3.2068519'
+    distance: '1'
+
+  - is_active: True
+    location_name: 'bruntsfield'
+    lat: '55.9373401'
+    long: '-3.2068519'
+    distance: '1'

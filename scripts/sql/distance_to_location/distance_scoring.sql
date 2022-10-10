@@ -44,7 +44,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_staging AS
 DROP TABLE IF EXISTS {{ params.location }}_analysis_final;
 CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
     (
-        SELECT (1/(price_per_sq_ft * distance_in_km)) as score,
+        SELECT (price_per_sq_ft * distance_in_km) as score,
                price_per_sq_ft,
                distance_in_km,
                price,
@@ -57,12 +57,12 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
                longitude,
                latitude
         FROM {{ params.location }}_analysis_staging
-        WHERE distance_in_km < 3
+        WHERE distance_in_km < {{ params.distance }}
     );
 
 INSERT INTO reporting.{{ params.location }}
 SELECT * FROM {{ params.location }}_analysis_final
-ORDER BY score desc
+ORDER BY score asc
 ;
 
 
