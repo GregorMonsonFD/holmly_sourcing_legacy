@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS reporting.all_locations;
 CREATE TABLE reporting.all_locations (
     score                   double precision
+    , id                    bigint primary key
     , price_per_sq_ft       double precision
     , distance_in_km        double precision
     , price                 decimal(11,2)

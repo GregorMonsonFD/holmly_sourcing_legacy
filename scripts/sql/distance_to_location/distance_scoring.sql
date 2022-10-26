@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS reporting.{{ params.location }};
 CREATE TABLE reporting.{{ params.location }} (
     score                   double precision
+    , id                    bigint
     , price_per_sq_ft       double precision
     , distance_in_km        double precision
     , price                 decimal(11,2)
@@ -27,6 +28,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_staging AS
                  + SIN(RADIANS({{ params.lat }}))
                  * SIN(RADIANS(latitude)))))
             ) AS distance_in_km,
+            id,
             price,
             full_address,
             number_of_beds,
@@ -46,6 +48,7 @@ DROP TABLE IF EXISTS {{ params.location }}_analysis_final;
 CREATE TEMPORARY TABLE {{ params.location }}_analysis_final AS
     (
         SELECT (price_per_sq_ft * distance_in_km) as score,
+               id,
                price_per_sq_ft,
                distance_in_km,
                price,
@@ -69,5 +72,6 @@ ORDER BY score asc
 INSERT INTO reporting.all_locations
 SELECT * FROM {{ params.location }}_analysis_final
 ORDER BY score asc
+ON CONFLICT DO NOTHING
 ;
 
