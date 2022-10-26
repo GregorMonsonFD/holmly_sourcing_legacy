@@ -38,8 +38,16 @@ dag = DAG(
 )
 
 with dag:
+    locations = config.get('locations')
 
-    for location in config.get('locations'):
+    create_union_table = PostgresOperator(
+        task_id='all_locations_reporting',
+        sql='union_table.sql',
+        postgres_conn_id="holmly-postgresql",
+        retries=3,
+    )
+
+    for location in locations:
 
         if not location.get("is_active"):
             continue
@@ -49,4 +57,6 @@ with dag:
         long = location["long"]
         distance_km = location["distance"]
 
-        report_sql(location_name, lat, long, distance_km)
+        reporting_task = report_sql(location_name, lat, long, distance_km)
+
+        create_union_table >> reporting_task

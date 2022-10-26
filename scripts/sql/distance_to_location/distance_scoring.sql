@@ -38,6 +38,7 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_staging AS
             latitude
         FROM refined.ingested_for_sale_houses
         WHERE     seen_last_ingestion = True
+        AND       area is not null
         ORDER BY distance_in_km asc
     );
 
@@ -65,4 +66,8 @@ SELECT * FROM {{ params.location }}_analysis_final
 ORDER BY score asc
 ;
 
+INSERT INTO reporting.all_locations
+SELECT * FROM {{ params.location }}_analysis_final
+ORDER BY score asc
+;
 
