@@ -2,23 +2,22 @@ DROP TABLE IF EXISTS  landing.coordinates_import_{{ ds_nodash }};
 CREATE TABLE landing.coordinates_import_{{ ds_nodash }}
 (
     ID                      bigint not null,
-    longitude               double,
-    latitude                double
+    longitude               double precision,
+    latitude                double precision
 );
 
-LOAD DATA INFILE '/var/lib/mysql-files/coordinates_export_{{ ds_nodash }}_filled.csv'
-INTO TABLE landing.coordinates_import_{{ ds_nodash }}
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
+COPY landing.coordinates_import_{{ ds_nodash }}
+FROM '/tmp/coordinates_export_filled/coordinates_export_{{ ds_nodash }}_filled.csv'
+DELIMITER ','
+ESCAPE '"'
+NULL 'null'
+CSV
 ;
 
-UPDATE      refined.ingested_for_sale_houses ifs
-LEFT JOIN   landing.coordinates_import_{{ ds_nodash }} co
-ON          co.ID = ifs.ID
+UPDATE refined.ingested_for_sale_houses ifs
 SET
-    ifs.longitude   = co.longitude,
-    ifs.latitude    = co.latitude
-WHERE
-    co.ID = ifs.ID
+    longitude   = co.longitude,
+    latitude    = co.latitude
+FROM        landing.coordinates_import_{{ ds_nodash }} co
+WHERE       co.ID = ifs.ID
 ;

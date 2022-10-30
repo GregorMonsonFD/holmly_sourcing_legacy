@@ -7,19 +7,23 @@ from scripts.python.extract_text import get_floorplan_text
 
 
 def clean_up_text(set: list):
-    for i in range(len(set)):
-        set[i] = set[i].replace(',', '')
+    try:
+        for i in range(len(set)):
+            set[i] = set[i].replace(',', '')
 
-        if set[i] == '.':
-            set.pop(i)
-            continue
+            if set[i] == '.':
+                set.pop(i)
+                continue
 
-        if set[i][0] == '.':
-            set[i] = set[i][1:]
+            if set[i][0] == '.':
+                set[i] = set[i][1:]
 
-        set[i] = float(set[i])
+            set[i] = float(set[i])
 
-    return set
+        return set
+
+    except:
+        return []
 
 
 def get_all_areas(**kwargs):
@@ -30,7 +34,7 @@ def get_all_areas(**kwargs):
     sq_m_to_ft_factor: float = 10.7639
 
     input_df = pd.read_csv(f"/home/eggzo/airflow/tmp_data/area_export_{ ds_nodash }.csv", header=None)
-    output_df = pd.DataFrame(columns=['id', 'link', 'number_of_floorplans', 'area', 'text'])
+    output_df = pd.DataFrame(columns=['id', 'link', 'number_of_floorplans', 'area'])
 
     for index, row in input_df.iterrows():
         sq_ft_total = 0.0
@@ -39,7 +43,7 @@ def get_all_areas(**kwargs):
         print(text)
 
         if text == 0:
-            tmp_data = [row[0], row[1], 0, 'null', 'null']
+            tmp_data = [row[0], row[1], 0, 'null']
             output_df.loc[len(output_df)] = tmp_data
             continue
 
@@ -54,17 +58,17 @@ def get_all_areas(**kwargs):
         if len(sq_ft) != 0:
             sq_ft_max = max(sq_ft)
 
-            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) != 0:
             sq_ft_max = max(sq_m) * sq_m_to_ft_factor
 
-            tmp_data = [row[0], row[1], text[1], sq_ft_max, text[0]]
+            tmp_data = [row[0], row[1], text[1], sq_ft_max]
             output_df.loc[len(output_df)] = tmp_data
 
         elif len(sq_m) == 0 and len(sq_ft) == 0:
-            tmp_data = [row[0], row[1], text[1], 'null', text[0]]
+            tmp_data = [row[0], row[1], text[1], 'null']
             output_df.loc[len(output_df)] = tmp_data
 
     print(output_df)

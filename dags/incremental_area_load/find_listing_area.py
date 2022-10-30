@@ -1,7 +1,7 @@
 from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
-from airflow.operators.mysql_operator import MySqlOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.utils.dates import days_ago
 from scripts.python.get_all_areas_in_csv import get_all_areas
 import datetime, os, yaml
@@ -22,19 +22,19 @@ dag = DAG(
     )
 
 with dag:
-    incremental_new_records_export = MySqlOperator(
+    incremental_new_records_export = PostgresOperator(
         task_id='sql_incremental_load_floorplan_export',
         sql='incremental_new_records_export.sql',
-        mysql_conn_id="mysql_warehouse",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 
 
     sftp_download_from_db_floorplan = SFTPOperator(
         task_id="sftp_download_from_db_floorplan",
-        ssh_conn_id="sftp_default",
+        ssh_conn_id="holmly_sftp",
         local_filepath="/home/eggzo/airflow/tmp_data/area_export_{{ ds_nodash }}.csv",
-        remote_filepath="/var/lib/mysql-files/area_export_{{ ds_nodash }}.csv",
+        remote_filepath="/tmp/area_export/area_export_{{ ds_nodash }}.csv",
         operation="get",
         create_intermediate_dirs=True,
         retries=3,
@@ -51,18 +51,18 @@ with dag:
 
     sftp_upload_to_db_floorplan = SFTPOperator(
         task_id="sftp_upload_to_db_floorplan",
-        ssh_conn_id="sftp_default",
+        ssh_conn_id="holmly_sftp",
         local_filepath="/home/eggzo/airflow/tmp_data/area_export_{{ ds_nodash }}_filled.csv",
-        remote_filepath="/var/lib/mysql-files/area_export_{{ ds_nodash }}_filled.csv",
+        remote_filepath="/tmp/area_export_filled/area_export_{{ ds_nodash }}_filled.csv",
         operation="put",
         create_intermediate_dirs=True,
         retries=3,
     )
 
-    incremental_new_records_import = MySqlOperator(
+    incremental_new_records_import = PostgresOperator(
         task_id='sql_incremental_load_floorplan_import',
         sql='incremental_new_records_import.sql',
-        mysql_conn_id="mysql_warehouse",
+        postgres_conn_id="holmly-postgresql",
         retries=3,
     )
 

@@ -4,28 +4,21 @@ CREATE TABLE landing.area_import_{{ ds_nodash }}
     ID                      bigint not null,
     links                   varchar(256),
     number_of_floorplans    smallint,
-    area                    varchar(128),
-    raw_floorplan_output    varchar(2048)
+    area                    double precision
 );
 
-LOAD DATA INFILE '/var/lib/mysql-files/area_export_{{ ds_nodash }}_filled.csv'
-INTO TABLE landing.area_import_{{ ds_nodash }}
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
+COPY landing.area_import_{{ ds_nodash }}
+FROM '/tmp/area_export_filled/area_export_{{ ds_nodash }}_filled.csv'
+DELIMITER ','
+ESCAPE '"'
+NULL 'null'
+CSV
 ;
 
-UPDATE      refined.ingested_for_sale_houses ifs
-LEFT JOIN   landing.area_import_{{ ds_nodash }} ai
-ON          ai.ID = ifs.ID
+UPDATE refined.ingested_for_sale_houses ifs
 SET
-    ifs.number_of_floorplans  = ai.number_of_floorplans,
-    ifs.area = IF (
-        ai.area = 'null',
-        null,
-        CAST(ai.area AS DOUBLE)
-    ) ,
-    ifs.raw_floorplan_output  = ai.raw_floorplan_output
-WHERE
-    ai.ID = ifs.ID
+    number_of_floorplans  = ai.number_of_floorplans,
+    area = ai.area
+FROM    landing.area_import_{{ ds_nodash }} ai
+WHERE   ai.ID = ifs.ID
 ;
