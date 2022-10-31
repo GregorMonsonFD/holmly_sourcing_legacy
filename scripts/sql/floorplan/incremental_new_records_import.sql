@@ -22,3 +22,11 @@ SET
 FROM    landing.area_import_{{ ds_nodash }} ai
 WHERE   ai.ID = ifs.ID
 ;
+
+UPDATE refined.ingested_to_rent_houses itr
+SET
+    number_of_floorplans  = ai.number_of_floorplans,
+    area = ai.area
+FROM        landing.area_import_{{ ds_nodash }} ai
+WHERE       ai.ID = itr.ID
+;
