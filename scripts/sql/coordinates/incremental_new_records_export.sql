@@ -7,6 +7,15 @@ CREATE TEMPORARY TABLE coordinates_export AS
         FROM refined.ingested_for_sale_houses
         WHERE longitude is null
         LIMIT 2000
+
+        UNION
+
+        SELECT
+            ID,
+            full_address
+        FROM refined.ingested_to_rent_houses
+        WHERE longitude is null
+        LIMIT 2000
     )
 ;
 
