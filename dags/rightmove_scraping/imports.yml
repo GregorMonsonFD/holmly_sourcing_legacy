@@ -19,3 +19,8 @@ imports:
     rightmove_region: '5E95742'
     region_name: 'falkirk'
     postcode_prefix: 'FK'
+
+  - is_active: True
+    rightmove_region: '5E1266'
+    region_name: 'stirling'
+    postcode_prefix: 'FK'
