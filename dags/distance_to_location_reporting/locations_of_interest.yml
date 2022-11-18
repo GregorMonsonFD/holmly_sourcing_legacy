@@ -53,3 +53,9 @@ locations:
     lat: '55.9373401'
     long: '-3.2068519'
     distance: '1'
+
+  - is_active: True
+    location_name: 'stirling train station'
+    lat: '56.1199'
+    long: '-3.9348'
+    distance: '1'
