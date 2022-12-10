@@ -40,7 +40,6 @@ CREATE TEMPORARY TABLE {{ params.location }}_analysis_staging AS
             latitude
         FROM refined.ingested_for_sale_houses
         WHERE     seen_last_ingestion = True
-        AND       area is not null
         ORDER BY distance_in_km asc
     );
 

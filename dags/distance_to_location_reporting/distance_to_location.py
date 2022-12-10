@@ -47,6 +47,13 @@ with dag:
         retries=3,
     )
 
+    rental_reporting = PostgresOperator(
+        task_id='all_rental_reporting',
+        sql='rental_profitability.sql',
+        postgres_conn_id="holmly-postgresql",
+        retries=3,
+    )
+
     for location in locations:
 
         if not location.get("is_active"):
@@ -59,4 +66,4 @@ with dag:
 
         reporting_task = report_sql(location_name, lat, long, distance_km)
 
-        create_union_table >> reporting_task
+        create_union_table >> reporting_task >> rental_reporting
