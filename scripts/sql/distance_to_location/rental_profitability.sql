@@ -10,9 +10,9 @@ create temp table rental as
         , avg((itr.price / itr.number_of_beds)) as price_per_bed
         , avg((itr.price / itr.number_of_beds)) * ifs.number_of_beds as rental_price_per_month
         , 0.25 * ifs.price as down_payment
-        , ifs.price * 0.00608 as monthly_interest
+        , ifs.price * 0.75 * 0.00608 as monthly_interest
         , (avg((itr.price / itr.number_of_beds)) * ifs.number_of_beds)
-        - (ifs.price * 0.00608) as profit
+        - (ifs.price * 0.75 * 0.00608) as profit
     from refined.ingested_for_sale_houses ifs
     left join refined.ingested_to_rent_houses itr
     on (
