@@ -10,6 +10,15 @@ CREATE TEMPORARY TABLE coordinates_export AS
     )
 ;
 
+INSERT INTO coordinates_export
+SELECT
+    ID,
+    full_address
+FROM refined.ingested_to_rent_houses
+WHERE longitude is null
+LIMIT 2000
+;
+
 COPY coordinates_export
 TO '/tmp/coordinates_export/coordinates_export_{{ ds_nodash }}.csv'
 DELIMITER ','

@@ -21,3 +21,11 @@ SET
 FROM        landing.coordinates_import_{{ ds_nodash }} co
 WHERE       co.ID = ifs.ID
 ;
+
+UPDATE refined.ingested_to_rent_houses itr
+SET
+    longitude   = co.longitude,
+    latitude    = co.latitude
+FROM        landing.coordinates_import_{{ ds_nodash }} co
+WHERE       co.ID = itr.ID
+;
