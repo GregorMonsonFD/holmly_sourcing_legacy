@@ -68,7 +68,7 @@ for region in config.get('imports'):
             task_id=f'rightmove_{ region_name }_to_csv',
             provide_context=True,
             python_callable=get_for_sale_properties,
-            execution_timeout=datetime.timedelta(seconds=300),
+            execution_timeout=datetime.timedelta(seconds=1200),
             op_kwargs={'borough': rightmove_region},
             params={'rightmove_region': rightmove_region},
             retries=2,
