@@ -17,7 +17,7 @@ LOCAL_PATH = os.path.dirname(__file__)
 dag = DAG(
         dag_id='find_listing_coordinates',
         default_args=args,
-        schedule_interval='0 1 * * *',
+        schedule_interval='0 5 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/coordinates'],
     )
 
