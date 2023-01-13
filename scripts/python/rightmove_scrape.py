@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import date
+from time import sleep
 
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -22,6 +23,9 @@ def get_for_sale_properties(ds, **kwargs):
 
     index = 0
     for pages in range(40):
+        
+        # speed limit to 1 page per second to not annoy web admins
+        sleep(1)
 
         # define our user headers
         headers = {
