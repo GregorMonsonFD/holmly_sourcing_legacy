@@ -21,12 +21,7 @@ colours.add_colour(122, 180, 225)   #colorOhkaBlue1
 elements = front_page(elements)
 
 summary = """
-        This is a test description, if you are reading this you
-        are a part of a select few who see my project in it's
-        infancy. Infancy is a great word because this project
-        requires a lot of attention hand holding and is draining
-        . I hope you read this and sympathise
-        with me. -Gregor
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     """
 
 elements = information_page(elements, colours.gc(0), colours.gc(3), "Top Properties", summary)
