@@ -1,7 +1,9 @@
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, PageBreak, Image, Spacer, Table, TableStyle)
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.platypus.flowables import KeepTogether
 from reportlab.lib.utils import ImageReader
+from rightmove_image_extract import scrape_images
 from reportlab.lib.pagesizes import inch
 
 
@@ -20,7 +22,8 @@ def row_maker(row_list: list, styles, font_size):
 
     return text_list
 
-def table_handler(elements, colour_1, colour_2):
+def table_handler(elements, link, colours):
+    image_list = scrape_images(link)
     font_size = 8
 
     column_style =   [ParagraphStyle(name="01", alignment=TA_RIGHT),
@@ -36,13 +39,14 @@ def table_handler(elements, colour_1, colour_2):
     thumbnail_x = 1*inch
     thumbnail_y = 0.8*inch
 
-    image = Image('https://media.rightmove.co.uk/9k/8449/128204576/8449_FAL220223_IMG_00_0000.jpeg', thumbnail_x, thumbnail_y)
-    image_2 = Image('https://media.rightmove.co.uk/9k/8449/128204576/8449_FAL220223_IMG_01_0000.jpeg', thumbnail_x, thumbnail_y)
-    image_3 = Image('https://media.rightmove.co.uk/9k/8449/128204576/8449_FAL220223_IMG_02_0000.jpeg', thumbnail_x, thumbnail_y)
+    image_data = []
+
+    for i in range(5):
+        image_data.append(Image(image_list[i], thumbnail_x, thumbnail_y))
+
 
     for rank in range(10):
         data = []
-        image_data = [image, image_2, image_3]
         full_address = "123 Falkirk Bolevard"
         city = "Falkirk"
         postcode = "FK1 1AA"
@@ -52,16 +56,6 @@ def table_handler(elements, colour_1, colour_2):
         estimated_rent = "£1500"
         profit = "£500"
         property_yield = "5.0%"
-        link = "https://www.rightmove.co.uk/properties/128204576#/?channel=RES_BUY"
-
-        #rows = [
-        #
-        #["image", "image_2", "image_3", "image_2", "image_3", f"Loan Interest:\t{monthly_interest}"]
-        #,["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", f"Est. Rent:\t{estimated_rent}"]
-        #,["placeholder", f"Rank {i+1}", "Full Address: ", full_address, f"Price: {price}",f"Est. Profit:\t{profit}" ]
-        #,["placeholder", "City: ", city, postcode, f"Down Payment: {down_payment}", f"Est. Yield:\t{property_yield}"]
-        #
-        #]
 
         rows = [
 
@@ -70,30 +64,28 @@ def table_handler(elements, colour_1, colour_2):
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Interest: ", monthly_interest]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Rent: ", estimated_rent]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Profit: ", profit]
-            , ["Link: ", link, "placeholder", "placeholder", "placeholder", "Yield: ", property_yield]
+            , [f'<link href="{link}" color="blue"><u>Rightmove Link</u></link>', "placeholder", "placeholder", "placeholder", "placeholder", "Yield: ", property_yield]
         ]
 
         for i, row in enumerate(rows):
             formatted_row = row_maker(row, column_style, font_size)
 
             if i == 1:
-                formatted_row[0] = image_data[0]
-                formatted_row[1] = image_data[1]
-                formatted_row[2] = image_data[2]
-                formatted_row[3] = image_data[1]
-                formatted_row[4] = image_data[2]
+
+                for image_index in range(5):
+                    formatted_row[image_index] = image_data[image_index]
 
             data.append(formatted_row)
 
         table = Table(data, colWidths=[75, 75, 75, 75, 95, 75, 75])
-        table_style = TableStyle([
+
+        table_style_list = [
             ('ALIGN', (0, 0), (-3, -1), 'CENTER'),
             ('ALIGN', (0, 1), (4, 1), 'LEFT'),
             ('VALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('ALIGN', (5, 0), (6, 5), 'RIGHT'),
-            ('LINEABOVE', (0, 0), (-1, -1), 1, colour_1),
-            ('LINEBELOW', (0, 0), (-1, -1), 1, colour_2),
-            #('BACKGROUND', (0, -1), (-1, -1), colour_1),
+            ('LINEABOVE', (0, 0), (-1, -1), 1, colours.gc('colorGreen0')), #colorGreen0Transparent
+            ('LINEBELOW', (0, 0), (-1, -1), 1, colours.gc('colorGreen0')),
             ('SPAN', (3, 0), (4, 0)),
             ('SPAN', (0, 1), (0, 4)),
             ('SPAN', (1, 1), (1, 4)),
@@ -101,9 +93,24 @@ def table_handler(elements, colour_1, colour_2):
             ('SPAN', (3, 1), (3, 4)),
             ('SPAN', (4, 1), (4, 4)),
             ('SPAN', (1, 5), (4, 5)),
-        ])
+        ]
+
+        for i in range(6):
+            if i%2 == 0:
+                table_style_list.append(
+                    ('BACKGROUND', (0, i), (-1, i), colours.gc('colorGreen0Transparent'))
+                )
+            else:
+                table_style_list.append(
+                    ('BACKGROUND', (0, i), (-1, i), colours.gc('colorBlue0Transparent'))
+                )
+
+        table_style_list.append(('BACKGROUND', (0, 1), (4, 4), colours.gc('transparent')))
+        table_style_list.append(('BACKGROUND', (0, 0), (-1, 0), colours.gc('colorTitleGreen0')))
+
+        table_style = TableStyle(table_style_list)
         table.setStyle(table_style)
-        elements.append(table)
+        elements.append(KeepTogether(table))
         elements.append(Spacer(10,20))
 
     return elements

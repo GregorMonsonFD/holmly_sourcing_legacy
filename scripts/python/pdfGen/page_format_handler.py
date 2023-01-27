@@ -70,15 +70,13 @@ class page_format_handler(canvas.Canvas):
 class colour_handler():
 
     def __init__(self):
-        self.colour_theme = []
+        self.colour_theme = {}
 
-    def add_colour(self, r, g, b):
-        self.colour_theme.append(
-            Color((r / 255), (g / 255), (b / 255), 1)
-        )
+    def add_colour(self, colour_name, r, g, b, alpha_val):
+        self.colour_theme[colour_name] = Color((r / 255), (g / 255), (b / 255), alpha=alpha_val)
 
-    def gc(self, index):
-        return(self.colour_theme[index])
+    def gc(self, colour_name):
+        return(self.colour_theme[colour_name])
 
 
 def front_page(elements):
@@ -120,9 +118,9 @@ def front_page(elements):
     return elements
 
 
-def information_page(elements, colour_1, colour_2, title, description):
+def information_page(elements, colours, title, description):
     page_title_style = ParagraphStyle('Hed0', fontSize=16, alignment=TA_LEFT, borderWidth=3,
-                                  textColor=colour_1)
+                                  textColor=colours.gc('colorGreen0'))
 
     normal_style = ParagraphStyle('summary', fontName='Poppins-Light', fontSize=12, leading=20, justifyBreaks=1,
                                    alignment=TA_LEFT, justifyLastLine=1)
@@ -137,7 +135,7 @@ def information_page(elements, colour_1, colour_2, title, description):
 
     d = Drawing(500, 1)
     line = Line(-15, 0, 483, 0)
-    line.strokeColor = colour_2
+    line.strokeColor = colours.gc('colorBlue0')
     line.strokeWidth = 2
     d.add(line)
     elements.append(d)
@@ -147,7 +145,7 @@ def information_page(elements, colour_1, colour_2, title, description):
 
     d = Drawing(500, 1)
     line = Line(-15, 0, 483, 0)
-    line.strokeColor = colour_2
+    line.strokeColor = colours.gc('colorBlue0')
     line.strokeWidth = 0.5
     d.add(line)
     elements.append(d)
@@ -157,6 +155,8 @@ def information_page(elements, colour_1, colour_2, title, description):
 
     elements.append(page_description)
 
-    elements = table_handler(elements, colour_1, colour_2)
+    link = 'https://www.rightmove.co.uk/properties/124411514#/?channel=RES_BUY'
+
+    elements = table_handler(elements, link, colours)
 
     return elements

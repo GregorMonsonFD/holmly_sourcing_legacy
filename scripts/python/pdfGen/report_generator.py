@@ -8,15 +8,15 @@ styleSheet = getSampleStyleSheet()
 colours = colour_handler()
 elements = []
 
-# colors - Azul turkeza 367AB3
+# colors - Azul turkeza 367AB
+colours.add_colour('colorGreen0', 39, 198, 190, 1)
+colours.add_colour('colorTitleGreen0', 39, 198, 200, 0.8)
+colours.add_colour('colorGreen0Transparent', 39, 198, 190, 0.07)
 
-colours.add_colour(45, 166, 153)    #colorOhkaGreen0
-colours.add_colour(182, 227, 166)   #colorOhkaGreen1
-colours.add_colour(140, 222, 192)   #colorOhkaGreen2
-colours.add_colour(50, 140, 140)    #colorOhkaGreenLineas
+colours.add_colour('colorBlue0', 39, 119, 181, 1)
+colours.add_colour('colorBlue0Transparent', 39, 119, 181, 0.07)
 
-colours.add_colour(54, 122, 179)    #colorOhkaBlue0
-colours.add_colour(122, 180, 225)   #colorOhkaBlue1
+colours.add_colour('transparent', 255, 255, 255, 1)
 
 elements = front_page(elements)
 
@@ -24,7 +24,7 @@ summary = """
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     """
 
-elements = information_page(elements, colours.gc(0), colours.gc(3), "Top Properties", summary)
+elements = information_page(elements, colours, "Top Properties", summary)
 
 # Build
 doc = SimpleDocTemplate(path, pagesize=LETTER)
