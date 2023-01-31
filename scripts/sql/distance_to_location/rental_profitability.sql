@@ -3,6 +3,7 @@ create temp table rental as
     select
         distinct(ifs.id)
         , ifs.city
+        , ifs.full_address
         , ifs.number_of_beds
         , ifs.price as price
         , ifs.links
