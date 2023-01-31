@@ -64,7 +64,7 @@ def table_handler(elements, link, colours):
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Interest: ", monthly_interest]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Rent: ", estimated_rent]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Profit: ", profit]
-            , [f'<link href="{link}" color="blue"><u>Rightmove Link</u></link>', "placeholder", "placeholder", "placeholder", "placeholder", "Yield: ", property_yield]
+            , [f'<link href="{link}" color="blue"><u>Rightmove Link</u></link>', "", "placeholder", "placeholder", "placeholder", "Yield: ", property_yield]
         ]
 
         for i, row in enumerate(rows):
