@@ -118,7 +118,7 @@ def front_page(elements):
     return elements
 
 
-def information_page(elements, colours, title, description):
+def information_page(elements, colours, title, description, input_dataframe):
     page_title_style = ParagraphStyle('Hed0', fontSize=16, alignment=TA_LEFT, borderWidth=3,
                                   textColor=colours.gc('colorGreen0'))
 
@@ -155,8 +155,6 @@ def information_page(elements, colours, title, description):
 
     elements.append(page_description)
 
-    link = 'https://www.rightmove.co.uk/properties/124411514#/?channel=RES_BUY'
-
-    elements = table_handler(elements, link, colours)
+    elements = table_handler(elements, input_dataframe, colours)
 
     return elements

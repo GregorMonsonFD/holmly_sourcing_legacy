@@ -22,8 +22,8 @@ def row_maker(row_list: list, styles, font_size):
 
     return text_list
 
-def table_handler(elements, link, colours):
-    image_list = scrape_images(link)
+def table_handler(elements, input_dataframe, colours):
+    #image_list = scrape_images(link)
     font_size = 8
 
     column_style =   [ParagraphStyle(name="01", alignment=TA_RIGHT),
@@ -34,32 +34,34 @@ def table_handler(elements, link, colours):
                       ParagraphStyle(name="06", alignment=TA_RIGHT),
                       ParagraphStyle(name="07", alignment=TA_LEFT),]
 
-    #header_row = row_maker(column_headers, header_style, font_size)
-
     thumbnail_x = 1*inch
     thumbnail_y = 0.8*inch
 
-    image_data = []
+    for index, row in input_dataframe.iterrows():
 
-    for i in range(5):
-        image_data.append(Image(image_list[i], thumbnail_x, thumbnail_y))
+        print(f"Adding new property {index}")
 
-
-    for rank in range(10):
+        image_data = []
         data = []
-        full_address = "123 Falkirk Bolevard"
-        city = "Falkirk"
-        postcode = "FK1 1AA"
-        price = "£123,456"
-        down_payment = "£12,345"
-        monthly_interest = "£1000"
-        estimated_rent = "£1500"
-        profit = "£500"
-        property_yield = "5.0%"
+
+        rank = row[0]
+        full_address = row[1]
+        price = row[2]
+        down_payment = row[3]
+        monthly_interest = row[4]
+        estimated_rent = row[5]
+        profit = row[6]
+        property_yield = row[7]
+        link = row[8]
+
+        image_list = scrape_images(link)
+
+        for i, image_link in enumerate(image_list):
+            image_data.append(Image(image_list[i], thumbnail_x, thumbnail_y))
 
         rows = [
 
-            ["Rank: ", f"{rank + 1}", "Full Address: ", f"{full_address}, {postcode}", "placeholder", "Price: ", price]
+            ["Rank: ", f"{rank + 1}", "Full Address: ", f"{full_address}", "placeholder", "Price: ", price]
             , ["image", "image_2", "image_3", "image_2", "image_3", "Down Payment: ", down_payment]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Interest: ", monthly_interest]
             , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Rent: ", estimated_rent]
@@ -68,6 +70,7 @@ def table_handler(elements, link, colours):
         ]
 
         for i, row in enumerate(rows):
+
             formatted_row = row_maker(row, column_style, font_size)
 
             if i == 1:

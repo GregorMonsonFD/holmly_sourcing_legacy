@@ -3,7 +3,10 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.pagesizes import LETTER, inch
 from page_format_handler import page_format_handler, colour_handler, front_page, information_page
 
+import pandas as pd
+
 path = 'hello_world.pdf'
+input_df = pd.read_csv('report_content_test.csv', header=None)
 styleSheet = getSampleStyleSheet()
 colours = colour_handler()
 elements = []
@@ -21,10 +24,10 @@ colours.add_colour('transparent', 255, 255, 255, 1)
 elements = front_page(elements)
 
 summary = """
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Top properties over 7% yield
     """
 
-elements = information_page(elements, colours, "Top Properties", summary)
+elements = information_page(elements, colours, "Top Yield Properties", summary, input_df)
 
 # Build
 doc = SimpleDocTemplate(path, pagesize=LETTER)
