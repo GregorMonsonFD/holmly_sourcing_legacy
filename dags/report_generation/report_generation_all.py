@@ -15,7 +15,7 @@ args = {
 LOCAL_PATH = os.path.dirname(__file__)
 
 dag = DAG(
-        dag_id='find_listing_area',
+        dag_id='report_generate_daily',
         default_args=args,
         schedule_interval='0 10 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/report_content'],# make this workflow happen every day
