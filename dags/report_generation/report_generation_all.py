@@ -24,7 +24,7 @@ dag = DAG(
 with dag:
     report_content_export = PostgresOperator(
         task_id='sql_report_content_export',
-        sql='report_content_export.sql.sql',
+        sql='report_content_export.sql',
         postgres_conn_id="holmly-postgresql",
         retries=3,
     )
