@@ -10,11 +10,11 @@ from reportlab.lib.colors import Color
 from scripts.python.pdfGen.table_generation import table_handler
 from datetime import datetime
 
-pdfmetrics.registerFont(TTFont('Poppins-Bold', '/home/eggzo/airflow/holmly_sourcing_legacy/scripts/python/pdfGen/fonts/Poppins-Bold.ttf'))
-pdfmetrics.registerFont(TTFont('Poppins-Light', '/home/eggzo/airflow/holmly_sourcing_legacy/scripts/python/pdfGen/fonts/scripts/python/pdfGen/fonts/Poppins-Light.ttf'))
-pdfmetrics.registerFont(TTFont('Poppins-Medium', '/home/eggzo/airflow/holmly_sourcing_legacy/scripts/python/pdfGen/fonts/scripts/python/pdfGen/fonts/Poppins-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('Poppins-Regular', '/home/eggzo/airflow/holmly_sourcing_legacy/scripts/python/pdfGen/fonts/scripts/python/pdfGen/fonts/Poppins-Regular.ttf'))
-pdfmetrics.registerFont(TTFont('Poppins-SemiBold', '/home/eggzo/airflow/holmly_sourcing_legacy/scripts/python/pdfGen/fonts/scripts/python/pdfGen/fonts/Poppins-SemiBold.ttf'))
+pdfmetrics.registerFont(TTFont('Poppins-Bold', '/home/eggzo/airflow/scripts/python/pdfGen/fonts/Poppins-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('Poppins-Light', '/home/eggzo/airflow/scripts/python/pdfGen/fonts/Poppins-Light.ttf'))
+pdfmetrics.registerFont(TTFont('Poppins-Medium', '/home/eggzo/airflow/scripts/python/pdfGen/fonts/Poppins-Medium.ttf'))
+pdfmetrics.registerFont(TTFont('Poppins-Regular', '/home/eggzo/airflow/scripts/python/pdfGen/fonts/Poppins-Regular.ttf'))
+pdfmetrics.registerFont(TTFont('Poppins-SemiBold', '/home/eggzo/airflow/scripts/python/pdfGen/fonts/Poppins-SemiBold.ttf'))
 
 
 class page_format_handler(canvas.Canvas):
