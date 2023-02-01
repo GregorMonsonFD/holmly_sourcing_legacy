@@ -1,6 +1,6 @@
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, PageBreak, Image, Spacer, Table, TableStyle)
 from reportlab.lib.pagesizes import LETTER, inch
-from page_format_handler import page_format_handler, colour_handler, front_page, information_page
+from scripts.python.pdfGen.page_format_handler import page_format_handler, colour_handler, front_page, information_page
 import pandas as pd
 
 def report_generator(**kwargs):

@@ -7,7 +7,7 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.colors import Color
-from table_generation import table_handler
+from scripts.python.pdfGen.table_generation import table_handler
 from datetime import datetime
 
 pdfmetrics.registerFont(TTFont('Poppins-Bold', './fonts/Poppins-Bold.ttf'))
