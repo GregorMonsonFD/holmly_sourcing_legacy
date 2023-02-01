@@ -6,7 +6,7 @@ import pandas as pd
 def report_generator(**kwargs):
     ds_nodash = kwargs['ds']
 
-    path = f'holmly_daily_report_{ds_nodash}.pdf'
+    path = f'/home/eggzo/airflow/tmp_data/holmly_daily_report_{ds_nodash}.pdf'
     input_df = pd.read_csv(f'/home/eggzo/airflow/tmp_data/report_content_{ ds_nodash }.csv', header=None)
 
     colours = colour_handler()
