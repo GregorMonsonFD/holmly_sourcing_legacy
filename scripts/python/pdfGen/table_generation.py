@@ -61,12 +61,12 @@ def table_handler(elements, input_dataframe, colours):
 
         rows = [
 
-            ["Rank: ", f"{rank + 1}", "Full Address: ", f"{full_address}", "placeholder", "Price: ", price]
-            , ["image", "image_2", "image_3", "image_2", "image_3", "Down Payment: ", down_payment]
-            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Interest: ", monthly_interest]
-            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Rent: ", estimated_rent]
-            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Profit: ", profit]
-            , [f'<link href="{link}" color="blue"><u>Rightmove Link</u></link>', "", "placeholder", "placeholder", "placeholder", "Yield: ", property_yield]
+            ["Rank: ", f"{rank}", f"{full_address}", "placeholder", "placeholder", "Price: ", f"£{price: ,}"]
+            , ["image", "image_2", "image_3", "image_2", "image_3", "Down Payment: ", f"£{down_payment: ,}"]
+            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Interest: ", f"£{monthly_interest: ,}"]
+            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Rent: ", f"£{estimated_rent: ,}"]
+            , ["placeholder", "placeholder", "placeholder", "placeholder", "placeholder", "Profit: ", f"£{profit: ,}"]
+            , [f'<link href="{link}" color="blue"><u>Rightmove Link</u></link>', "", "placeholder", "placeholder", "placeholder", "Yield: ", f"{property_yield}%"]
         ]
 
         for i, row in enumerate(rows):
@@ -89,7 +89,7 @@ def table_handler(elements, input_dataframe, colours):
             ('ALIGN', (5, 0), (6, 5), 'RIGHT'),
             ('LINEABOVE', (0, 0), (-1, -1), 1, colours.gc('colorGreen0')), #colorGreen0Transparent
             ('LINEBELOW', (0, 0), (-1, -1), 1, colours.gc('colorGreen0')),
-            ('SPAN', (3, 0), (4, 0)),
+            ('SPAN', (2, 0), (4, 0)),
             ('SPAN', (0, 1), (0, 4)),
             ('SPAN', (1, 1), (1, 4)),
             ('SPAN', (2, 1), (2, 4)),
