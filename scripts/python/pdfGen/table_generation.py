@@ -3,7 +3,7 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER, TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus.flowables import KeepTogether
 from reportlab.lib.utils import ImageReader
-from rightmove_image_extract import scrape_images
+from scripts.python.pdfGen.rightmove_image_extract import scrape_images
 from reportlab.lib.pagesizes import inch
 
 
