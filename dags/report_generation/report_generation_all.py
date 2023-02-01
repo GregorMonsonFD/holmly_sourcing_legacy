@@ -43,9 +43,9 @@ with dag:
     generate_report = PythonOperator(
         task_id='find_all_floorplans_incremental',
         provide_context=True,
-        python_callable=get_all_areas,
+        python_callable=report_generator,
         op_kwargs={'ds': '{{ ds_nodash }}'},
-        execution_timeout=datetime.timedelta(hours=16),
+        execution_timeout=datetime.timedelta(hours=1),
         retries=1,
     )
 
