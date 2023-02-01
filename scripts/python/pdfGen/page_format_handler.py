@@ -47,8 +47,8 @@ class page_format_handler(canvas.Canvas):
         self.saveState()
         self.setStrokeColorRGB(0, 0, 0)
         self.setLineWidth(0.5)
-        self.setFont('Poppins-Bold', 16)
-        self.drawImage("sps_logo.png", self.width - inch * 9 + 30, self.height - 45, width=100, height=35,
+        self.setFont('Poppins-Bold', 16)Ï
+        self.drawImage("/home/eggzo/airflow/scripts/python/pdfGen/sps_logo.png", self.width - inch * 9 + 30, self.height - 45, width=100, height=35,
                        preserveAspectRatio=True, mask='auto')
         self.drawString(66, 755, "Scottish Property Sourcing")
         self.line(30, 740, LETTER[0] - 50, 740)
@@ -62,7 +62,7 @@ class page_format_handler(canvas.Canvas):
     def draw_front_page(self):
         self.saveState()
         self.setFont('Poppins-Light', 10)
-        self.drawImage("sps_logo.png", inch * 4 - 20, -inch * 0.3, width=700, height=700,
+        self.drawImage("/home/eggzo/airflow/scripts/python/pdfGen/sps_logo.png", inch * 4 - 20, -inch * 0.3, width=700, height=700,
                        preserveAspectRatio=True, mask='auto')
         self.restoreState()
 
