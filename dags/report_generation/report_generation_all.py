@@ -41,7 +41,7 @@ with dag:
     )
 
     generate_report = PythonOperator(
-        task_id='find_all_floorplans_incremental',
+        task_id='generate_daily_report',
         provide_context=True,
         python_callable=report_generator,
         op_kwargs={'ds': '{{ ds_nodash }}'},

@@ -76,7 +76,7 @@ def table_handler(elements, input_dataframe, colours):
             if i == 1:
 
                 for image_index in range(5):
-                    formatted_row[image_index] = image_data[image_index]
+                    formatted_row[image_index] = image_data[image_index % (len(image_index) + 1)]
 
             data.append(formatted_row)
 
