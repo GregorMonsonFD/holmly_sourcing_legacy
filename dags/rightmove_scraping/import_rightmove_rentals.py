@@ -54,7 +54,7 @@ globals()[f'rightmove-scrape-to-rent'] = DAG(
     )
 
 common_end = DummyOperator(
-    task_id='common_end_to-rent',
+    task_id='common_end_to_rent',
     dag=globals()['rightmove-scrape-to-rent']
     )
 

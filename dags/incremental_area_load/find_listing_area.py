@@ -30,8 +30,8 @@ with dag:
         timeout=7200,
         soft_fail=False,
         retries=2,
-        external_task_id='common_end_for_sale',
-        external_dag_id='rightmove-scrape-for-sale',
+        external_task_id='common_end_to_rent',
+        external_dag_id='rightmove-scrape-to-rent',
         dag=dag
     )
 
@@ -41,8 +41,8 @@ with dag:
         timeout=7200,
         soft_fail=False,
         retries=2,
-        external_task_id='task_to_be_sensed',
-        external_dag_id='cloudwalker_dag_with_task_to_be_sensed',
+        external_task_id='common_end_for_sale',
+        external_dag_id='rightmove-scrape-for-sale',
         dag=dag
     )
 

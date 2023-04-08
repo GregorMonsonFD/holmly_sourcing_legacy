@@ -32,8 +32,8 @@ with dag:
         timeout=7200,
         soft_fail=False,
         retries=2,
-        external_task_id='location_reporting',
-        external_dag_id='find_listing_coordinates',
+        external_task_id='common_end_location_reporting_tables',
+        external_dag_id='location_reporting',
         dag=dag
     )
 

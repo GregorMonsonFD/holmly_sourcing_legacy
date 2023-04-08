@@ -30,7 +30,7 @@ with dag:
         timeout=7200,
         soft_fail=False,
         retries=2,
-        external_task_id='common_end_area',
+        external_task_id='common_end_area_load',
         external_dag_id='find_listing_area',
         dag=dag
     )
