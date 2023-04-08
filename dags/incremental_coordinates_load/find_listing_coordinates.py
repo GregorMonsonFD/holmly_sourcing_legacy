@@ -2,7 +2,7 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
-from airflow.operators.sensors import ExternalTaskSensor
+from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.operators.dummy_operator import DummyOperator
 from scripts.python.get_all_coordinates_in_csv import get_all_coordinates
 from airflow.utils.dates import days_ago
