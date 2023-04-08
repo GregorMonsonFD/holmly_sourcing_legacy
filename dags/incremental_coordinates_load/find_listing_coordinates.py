@@ -2,6 +2,8 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.sensors import ExternalTaskSensor
+from airflow.operators.dummy_operator import DummyOperator
 from scripts.python.get_all_coordinates_in_csv import get_all_coordinates
 from airflow.utils.dates import days_ago
 import datetime, os, yaml
@@ -17,11 +19,22 @@ LOCAL_PATH = os.path.dirname(__file__)
 dag = DAG(
         dag_id='find_listing_coordinates',
         default_args=args,
-        schedule_interval='0 5 * * *',
+        schedule_interval='0 0 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/coordinates'],
     )
 
 with dag:
+    area_task_sensor = ExternalTaskSensor(
+        task_id='area_task_sensor',
+        poke_interval=300,
+        timeout=7200,
+        soft_fail=False,
+        retries=2,
+        external_task_id='common_end_area',
+        external_dag_id='find_listing_area',
+        dag=dag
+    )
+
     incremental_new_records_export = PostgresOperator(
         task_id='sql_incremental_load_coordinates_export',
         sql='incremental_new_records_export.sql',
@@ -66,5 +79,12 @@ with dag:
         retries=3,
     )
 
+    common_end = DummyOperator(
+        task_id='common_end_coordinates_load',
+        dag=dag
+    )
+
+    area_task_sensor >> incremental_new_records_export
     incremental_new_records_export >> sftp_download_from_db_coordinates >> find_all_coordinatess_incremental
     find_all_coordinatess_incremental >> sftp_upload_to_db_coordinates >> incremental_new_records_import
+    incremental_new_records_import >> common_end

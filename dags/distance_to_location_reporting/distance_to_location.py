@@ -1,5 +1,7 @@
 from airflow.models import DAG
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.sensors import ExternalTaskSensor
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 import os, yaml
 
@@ -33,12 +35,23 @@ def report_sql(location_name, lat, long, distance_km):
 dag = DAG(
     dag_id='location_reporting',
     default_args=args,
-    schedule_interval='0 8 * * *', # make this workflow happen every day
+    schedule_interval='0 0 * * *', # make this workflow happen every day
     template_searchpath=['/home/eggzo/airflow/scripts/sql/distance_to_location'],
 )
 
 with dag:
     locations = config.get('locations')
+
+    coordinates_task_sensor = ExternalTaskSensor(
+        task_id='coordinates_task_sensor',
+        poke_interval=300,
+        timeout=7200,
+        soft_fail=False,
+        retries=2,
+        external_task_id='common_end_coordinates_load',
+        external_dag_id='find_listing_coordinates',
+        dag=dag
+    )
 
     create_union_table = PostgresOperator(
         task_id='all_locations_reporting',
@@ -54,6 +67,13 @@ with dag:
         retries=3,
     )
 
+    common_end = DummyOperator(
+        task_id='common_end_location_reporting_tables',
+        dag=dag
+    )
+
+    coordinates_task_sensor >> create_union_table
+
     for location in locations:
 
         if not location.get("is_active"):
@@ -66,4 +86,4 @@ with dag:
 
         reporting_task = report_sql(location_name, lat, long, distance_km)
 
-        create_union_table >> reporting_task >> rental_reporting
+        create_union_table >> reporting_task >> rental_reporting >> common_end

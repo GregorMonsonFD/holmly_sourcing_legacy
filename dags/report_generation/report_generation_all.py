@@ -2,6 +2,8 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.sensors import ExternalTaskSensor
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from scripts.python.pdfGen.report_generator import report_generator
 import datetime, os, yaml
@@ -17,11 +19,22 @@ LOCAL_PATH = os.path.dirname(__file__)
 dag = DAG(
         dag_id='report_generate_daily',
         default_args=args,
-        schedule_interval='0 10 * * *',
+        schedule_interval='0 0 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/report_content'],# make this workflow happen every day
     )
 
 with dag:
+    location_reporting_tables_task_sensor = ExternalTaskSensor(
+        task_id='location_reporting_tables_task_sensor',
+        poke_interval=300,
+        timeout=7200,
+        soft_fail=False,
+        retries=2,
+        external_task_id='location_reporting',
+        external_dag_id='find_listing_coordinates',
+        dag=dag
+    )
+
     report_content_export = PostgresOperator(
         task_id='sql_report_content_export',
         sql='report_content_export.sql',
@@ -49,4 +62,5 @@ with dag:
         retries=1,
     )
 
+    location_reporting_tables_task_sensor >> report_content_export
     report_content_export >> sftp_download_from_db_report_content >> generate_report

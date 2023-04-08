@@ -2,6 +2,8 @@ from airflow.models import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
+from airflow.operators.sensors import ExternalTaskSensor
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from scripts.python.get_all_areas_in_csv import get_all_areas
 import datetime, os, yaml
@@ -17,11 +19,33 @@ LOCAL_PATH = os.path.dirname(__file__)
 dag = DAG(
         dag_id='find_listing_area',
         default_args=args,
-        schedule_interval='0 6 * * *',
+        schedule_interval='0 0 * * *',
         template_searchpath=['/home/eggzo/airflow/scripts/sql/floorplan'],# make this workflow happen every day
     )
 
 with dag:
+    rent_task_sensor = ExternalTaskSensor(
+        task_id='rent_task_sensor',
+        poke_interval=300,
+        timeout=7200,
+        soft_fail=False,
+        retries=2,
+        external_task_id='common_end_for_sale',
+        external_dag_id='rightmove-scrape-for-sale',
+        dag=dag
+    )
+
+    sale_task_sensor = ExternalTaskSensor(
+        task_id='sale_task_sensor',
+        poke_interval=300,
+        timeout=7200,
+        soft_fail=False,
+        retries=2,
+        external_task_id='task_to_be_sensed',
+        external_dag_id='cloudwalker_dag_with_task_to_be_sensed',
+        dag=dag
+    )
+
     incremental_new_records_export = PostgresOperator(
         task_id='sql_incremental_load_floorplan_export',
         sql='incremental_new_records_export.sql',
@@ -66,5 +90,14 @@ with dag:
         retries=3,
     )
 
+    common_end = DummyOperator(
+        task_id='common_end_area_load',
+        dag=dag
+    )
+
+    rent_task_sensor >> incremental_new_records_export
+    sale_task_sensor >> incremental_new_records_export
     incremental_new_records_export >> sftp_download_from_db_floorplan >> find_all_floorplans_incremental
     find_all_floorplans_incremental >> sftp_upload_to_db_floorplan >> incremental_new_records_import
+    incremental_new_records_import >> common_end
+
