@@ -3,7 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.sensors.external_task import ExternalTaskSensor
-from airflow.operators.dummy_operator import DummyOperator
+from airflow.providers.ssh.operators.ssh import SSHOperator
 from airflow.utils.dates import days_ago
 from scripts.python.pdfGen.report_generator import report_generator
 import datetime, os, yaml
@@ -72,6 +72,12 @@ with dag:
         retries=3,
     )
 
+    upload_report_to_s3 = SSHOperator(
+        task_id="upload_report_to_s3",
+        ssh_conn_id='holmly_ssh',
+        command="aws s3 cp holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf s3://sps-daily-reports/daily_reports/",
+    )
+
     location_reporting_tables_task_sensor >> report_content_export
     report_content_export >> sftp_download_from_db_report_content >> generate_report
-    generate_report >> sftp_upload_to_db_report
+    generate_report >> sftp_upload_to_db_report >> upload_report_to_s3
