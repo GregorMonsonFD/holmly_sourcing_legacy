@@ -4,8 +4,10 @@ from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.providers.ssh.operators.ssh import SSHOperator
+from airflow.models import Variable
 from airflow.utils.dates import days_ago
 from scripts.python.pdfGen.report_generator import report_generator
+from scripts.python.survey_monkey_distribute_daily import survey_monkey_distribute_daily
 import datetime, os, yaml
 
 args = {
@@ -75,9 +77,18 @@ with dag:
     upload_report_to_s3 = SSHOperator(
         task_id="upload_report_to_s3",
         ssh_conn_id='holmly_ssh',
-        command="aws s3 cp holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf s3://sps-daily-reports/daily_reports/",
+        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf s3://sps-daily-reports/daily_reports/",
+    )
+
+    survey_monkey_distribute_daily = PythonOperator(
+        task_id='survey_monkey_distribute_daily',
+        provide_context=True,
+        python_callable=survey_monkey_distribute_daily,
+        op_kwargs={'api_key': Variable.get('survey_monkey_api_key'), 'server' : Variable.get('survey_monkey_server')},
+        execution_timeout=datetime.timedelta(hours=1),
+        retries=1,
     )
 
     location_reporting_tables_task_sensor >> report_content_export
     report_content_export >> sftp_download_from_db_report_content >> generate_report
-    generate_report >> sftp_upload_to_db_report >> upload_report_to_s3
+    generate_report >> sftp_upload_to_db_report >> upload_report_to_s3 >> survey_monkey_distribute_daily
