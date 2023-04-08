@@ -62,5 +62,16 @@ with dag:
         retries=1,
     )
 
+    sftp_upload_to_db_report = SFTPOperator(
+        task_id="sftp_upload_to_db_report",
+        ssh_conn_id="holmly_sftp",
+        local_filepath="/home/eggzo/airflow/tmp_data/holmly_daily_report_{{ ds_nodash }}.pdf",
+        remote_filepath="/tmp/report_output/holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf",
+        operation="put",
+        create_intermediate_dirs=True,
+        retries=3,
+    )
+
     location_reporting_tables_task_sensor >> report_content_export
     report_content_export >> sftp_download_from_db_report_content >> generate_report
+    generate_report >> sftp_upload_to_db_report
