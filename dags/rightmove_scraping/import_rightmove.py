@@ -3,6 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.bash_operator import BashOperator
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from scripts.python.rightmove_scrape import get_for_sale_properties
 import datetime, os, yaml
@@ -45,6 +46,18 @@ SQL_files = (
         ]
         )
 
+globals()['rightmove-scrape-for-sale'] = DAG(
+        dag_id='rightmove-scrape-for-sale',
+        default_args=args,
+        schedule_interval='0 0 * * *', # make this workflow happen every day
+        template_searchpath=['/home/eggzo/airflow/scripts/sql/db_operations'],
+    )
+
+common_end = DummyOperator(
+    task_id='common_end_for_sale',
+    dag=globals()['rightmove-scrape-for-sale']
+    )
+
 for region in config.get('imports'):
 
     if not region.get("is_active"):
@@ -55,14 +68,7 @@ for region in config.get('imports'):
     postcode_prefix = region["postcode_prefix"]
     ds = '{{ ds }}'
 
-    globals()[f'rightmove-scrape-{region_name}'] = DAG(
-        dag_id=f'rightmove-scrape-{region_name}',
-        default_args=args,
-        schedule_interval='0 0 * * *', # make this workflow happen every day
-        template_searchpath=['/home/eggzo/airflow/scripts/sql/db_operations'],
-    )
-
-    with globals()[f'rightmove-scrape-{region_name}']:
+    with globals()['rightmove-scrape-for-sale']:
 
         rightmove_to_csv = PythonOperator(
             task_id=f'rightmove_{ region_name }_to_csv',
@@ -101,4 +107,4 @@ for region in config.get('imports'):
         for i in range(3, 6):
             sql_insert_ids >> postgresql_group(SQL_files[i], rightmove_region, region_name, postcode_prefix) >> staging_to_refined
         
-        staging_to_refined >> delete_csv_local
+        staging_to_refined >> delete_csv_local >> common_end
