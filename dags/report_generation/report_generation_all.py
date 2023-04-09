@@ -68,7 +68,7 @@ with dag:
         task_id="sftp_upload_to_db_report",
         ssh_conn_id="holmly_sftp",
         local_filepath="/home/eggzo/airflow/tmp_data/holmly_daily_report_{{ ds_nodash }}.pdf",
-        remote_filepath="/tmp/report_output/holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf",
+        remote_filepath="/tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf",
         operation="put",
         create_intermediate_dirs=True,
         retries=3,
@@ -77,7 +77,7 @@ with dag:
     upload_report_to_s3 = SSHOperator(
         task_id="upload_report_to_s3",
         ssh_conn_id='holmly_ssh',
-        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ (execution_date + macros.timedelta(days=1)).strftime('%Y_%m_%d') }}.pdf s3://sps-daily-reports/daily_reports/",
+        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf s3://sps-daily-reports/daily_reports/",
     )
 
     survey_monkey_distribute_daily = PythonOperator(
