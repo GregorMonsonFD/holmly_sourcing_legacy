@@ -25,7 +25,7 @@ def report_generator(**kwargs):
     elements = front_page(elements)
 
     summary = """
-            Top properties over 7% yield
+            Top properties
         """
 
     elements = information_page(elements, colours, "Top Yield Properties", summary, input_df)

@@ -92,11 +92,11 @@ def front_page(elements):
 
     title_text = 'Scottish Property Sourcing'
 
-    subtitle_text = 'Test Report'
+    subtitle_text = 'Daily Property Report'
 
-    summary_text = """
-    Report Type: Testing Formatting<br/>
-    Publication Date: 01-Jan-2023<br/>
+    summary_text = f"""
+    Report Type: Top Properties For Sale in Scotland<br/>
+    Publication Date: {datetime.today().strftime("%b %d %Y")}<br/>
     """
 
     title = Paragraph(title_text, title_style)
