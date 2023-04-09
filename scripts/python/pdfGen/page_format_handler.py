@@ -84,7 +84,7 @@ def front_page(elements):
     title_style = ParagraphStyle('title', fontName='Poppins-Bold', fontSize=70, leading=72,
                                  alignment=TA_LEFT, leftIndent=0)
 
-    subtitle_style = ParagraphStyle('title', fontName='Poppins-SemiBold', fontSize=40, leading=72,
+    subtitle_style = ParagraphStyle('title', fontName='Poppins-SemiBold', fontSize=36, leading=72,
                                  alignment=TA_LEFT, leftIndent=0)
 
     summary_style = ParagraphStyle('summary', fontName='Poppins-Light', fontSize=12, leading=20, justifyBreaks=1,
@@ -92,10 +92,10 @@ def front_page(elements):
 
     title_text = 'Scottish Property Sourcing'
 
-    subtitle_text = 'Daily Property Report'
+    subtitle_text = 'Daily Report'
 
     summary_text = f"""
-    Report Type: Top Properties For Sale in Scotland<br/>
+    Report Type: Top Properties For Sale<br/>
     Publication Date: {datetime.today().strftime("%b %d %Y")}<br/>
     """
 
