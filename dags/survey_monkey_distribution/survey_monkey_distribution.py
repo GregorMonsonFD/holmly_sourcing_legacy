@@ -43,3 +43,5 @@ with dag:
         retries=1,
     )
 
+    report_generation_task_sensor >> survey_monkey_distribute_daily
+
