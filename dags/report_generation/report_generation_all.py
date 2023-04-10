@@ -4,6 +4,7 @@ from airflow.providers.sftp.operators.sftp import SFTPOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.providers.ssh.operators.ssh import SSHOperator
+from airflow.operators.dummy_operator import DummyOperator
 from airflow.models import Variable
 from airflow.utils.dates import days_ago
 from scripts.python.pdfGen.report_generator import report_generator
@@ -82,15 +83,10 @@ with dag:
         command=aws_command,
     )
 
-    survey_monkey_distribute_daily = PythonOperator(
-        task_id='survey_monkey_distribute_daily',
-        provide_context=True,
-        python_callable=survey_monkey_distribute_daily,
-        op_kwargs={'api_key': Variable.get('survey_monkey_api_key'), 'server' : Variable.get('survey_monkey_server')},
-        execution_timeout=datetime.timedelta(hours=1),
-        retries=1,
+    common_end = DummyOperator(
+        task_id='common_end_report_generation',
     )
 
     location_reporting_tables_task_sensor >> report_content_export
     report_content_export >> sftp_download_from_db_report_content >> generate_report
-    generate_report >> sftp_upload_to_db_report >> upload_report_to_s3 >> survey_monkey_distribute_daily
+    generate_report >> sftp_upload_to_db_report >> upload_report_to_s3 >> common_end
