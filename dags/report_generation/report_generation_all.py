@@ -25,7 +25,7 @@ dag = DAG(
         template_searchpath=['/home/eggzo/airflow/scripts/sql/report_content'],# make this workflow happen every day
     )
 
-today = datetime.datetime.today().strftime('%Y%m%d')
+aws_command = "aws s3 cp /tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf " + f"s3://sps-daily-reports/daily_reports/holmly_daily_report_{ datetime.datetime.today().strftime('%Y%m%d') }.pdf"
 
 with dag:
     location_reporting_tables_task_sensor = ExternalTaskSensor(
@@ -79,7 +79,7 @@ with dag:
     upload_report_to_s3 = SSHOperator(
         task_id="upload_report_to_s3",
         ssh_conn_id='holmly_ssh',
-        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf s3://sps-daily-reports/daily_reports/holmly_daily_report_{{ today }}.pdf",
+        command=aws_command,
     )
 
     survey_monkey_distribute_daily = PythonOperator(
