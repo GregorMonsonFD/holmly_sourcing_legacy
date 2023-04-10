@@ -8,7 +8,8 @@ from airflow.models import Variable
 from airflow.utils.dates import days_ago
 from scripts.python.pdfGen.report_generator import report_generator
 from scripts.python.survey_monkey_distribute_daily import survey_monkey_distribute_daily
-import datetime, os, yaml
+from datetime import datetime
+import os, yaml
 
 args = {
     'owner': 'Gregor Monson',
@@ -77,7 +78,7 @@ with dag:
     upload_report_to_s3 = SSHOperator(
         task_id="upload_report_to_s3",
         ssh_conn_id='holmly_ssh',
-        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf s3://sps-daily-reports/daily_reports/holmly_daily_report_{{ datetime.datetime.today().strftime('%Y%m%d') }}.pdf",
+        command="aws s3 cp /tmp/report_output/holmly_daily_report_{{ ds_nodash }}.pdf s3://sps-daily-reports/daily_reports/holmly_daily_report_{{ datetime.today().strftime('%Y%m%d') }}.pdf",
     )
 
     survey_monkey_distribute_daily = PythonOperator(
