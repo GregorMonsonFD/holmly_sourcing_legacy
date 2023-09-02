@@ -27,7 +27,7 @@ imports:
 
   - is_active: True
     rightmove_region: '5E1228'
-    region_name: 'south shields'
+    region_name: 'south_shields'
     postcode_prefix: 'NE'
   
   - is_active: True
