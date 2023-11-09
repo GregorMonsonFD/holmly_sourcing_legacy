@@ -12,7 +12,7 @@ CREATE TEMPORARY TABLE report_content AS
             yield_percentage,
             links
         FROM reporting.rental_projections_in_desirable_areas
-        WHERE yield_percentage > 7
+        WHERE yield_percentage > 3
     )
 ;
 
